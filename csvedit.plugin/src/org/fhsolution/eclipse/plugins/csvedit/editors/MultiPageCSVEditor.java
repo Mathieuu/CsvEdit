@@ -53,6 +53,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.fhsolution.eclipse.plugins.csvedit.detailededitor.DetailedEditor;
 import org.fhsolution.eclipse.plugins.csvedit.editors.text.CSVTextEditor;
 import org.fhsolution.eclipse.plugins.csvedit.filter.CSVTableFilter;
 import org.fhsolution.eclipse.plugins.csvedit.model.AbstractCSVFile;
@@ -63,7 +64,6 @@ import org.fhsolution.eclipse.plugins.csvedit.page.InsertColumnPage;
 import org.fhsolution.eclipse.plugins.csvedit.providers.CSVContentProvider;
 import org.fhsolution.eclipse.plugins.csvedit.providers.CSVLabelProvider;
 import org.fhsolution.eclipse.plugins.csvedit.sorter.CSVTableSorter;
-import org.fhsolution.eclipse.plugin.csvedit.detailededitor.DetailedEditor;
 
 /**
  * 

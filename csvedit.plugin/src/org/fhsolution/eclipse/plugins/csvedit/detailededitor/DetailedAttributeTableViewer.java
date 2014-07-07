@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.fhsolution.eclipse.plugin.csvedit.detailededitor;
+package org.fhsolution.eclipse.plugins.csvedit.detailededitor;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.fhsolution.eclipse.plugin.csvedit.detailededitor;
+package org.fhsolution.eclipse.plugins.csvedit.detailededitor;
 
 /**
  * Class providing methods to add a custom tableViewer to a Composite
