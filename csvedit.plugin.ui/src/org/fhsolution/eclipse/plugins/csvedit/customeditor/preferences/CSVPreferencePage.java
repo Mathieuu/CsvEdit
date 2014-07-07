@@ -101,6 +101,20 @@ implements IWorkbenchPreferencePage {
                 PreferenceConstants.CASE_SENSITIVE_SEARCH,
                 "&make filtering case sensitive",
                 getFieldEditorParent()));
+        
+        
+        StringFieldEditor regexField = new StringFieldEditor(
+                PreferenceConstants.REGEX_HEADER_TABLE,
+                "Header regex indicating that the column should be displayed as table", StringFieldEditor.UNLIMITED, getFieldEditorParent());
+        regexField.setEmptyStringAllowed(true);
+        addField(regexField);
+        
+        
+        StringFieldEditor incellDelimiterField = new StringFieldEditor(
+                PreferenceConstants.INCELL_DELIMITER,
+                "Delimiter to use as a value delimiter in a cell", StringFieldEditor.UNLIMITED, getFieldEditorParent());
+        incellDelimiterField.setEmptyStringAllowed(true);
+        addField(incellDelimiterField);
 
     }
 

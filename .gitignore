@@ -34,3 +34,5 @@ RemoteSystemsTempFiles/
 
 # TeXlipse plugin
 .texlipse
+
+internalChangelog.txt

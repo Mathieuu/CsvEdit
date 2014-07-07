@@ -22,6 +22,7 @@ import org.fhsolution.eclipse.plugins.csvedit.model.ICsvOptionsProvider;
  * {@link DefaultCSVFile} implements the {@link AbstractCSVFile} abstract
  * methods based on the values stored in the preferences system
  * @author jpizar
+ * @author msavy
  *
  */
 public class DefaultCSVFile extends AbstractCSVFile {
@@ -76,5 +77,15 @@ public class DefaultCSVFile extends AbstractCSVFile {
     @Override
     public boolean useQualifier() {
         return optionsProvider.useTextQualifier();
+    }
+    
+    @Override
+    public String getInCellDelimiter() {
+        return optionsProvider.getInCellDelimiter();
+    }
+
+    @Override
+    public String getRegexTableMarker() {
+        return optionsProvider.getRegexTableMarker();
     }
 }

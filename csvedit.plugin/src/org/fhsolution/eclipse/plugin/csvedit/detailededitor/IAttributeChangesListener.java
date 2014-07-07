@@ -12,29 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fhsolution.eclipse.plugins.csvedit.model;
+
+package org.fhsolution.eclipse.plugin.csvedit.detailededitor;
 
 /**
- *
+ * Class providing methods to add a custom tableViewer to a Composite
  * @author fhenri
  * @author msavy
- *
+ * 
  */
-public interface ICsvOptionsProvider {
+public interface IAttributeChangesListener {
 
-    boolean getUseFirstLineAsHeader();
-
-    boolean getSensitiveSearch();
-
-    String getCustomDelimiter();
-
-    String getTextQualifier();
-
-    boolean useTextQualifier();
-
-    String getCommentChar();
-    
-    String getInCellDelimiter();
-    
-    String getRegexTableMarker();
+	/**
+	 * Element at the given index position has changes in
+	 * @param row the {@link AttributeRow} which changed
+	 * @param index the index position
+	 */
+	void rowChanged(AttributeRow row, int index);
 }
+
+

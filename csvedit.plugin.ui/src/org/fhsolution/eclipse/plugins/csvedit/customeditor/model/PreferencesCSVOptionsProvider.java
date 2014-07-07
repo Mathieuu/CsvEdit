@@ -20,7 +20,7 @@ import org.fhsolution.eclipse.plugins.csvedit.model.ICsvOptionsProvider;
 
 /**
  *
- * @author fhenri
+ * @author fhenri, msavy
  *
  */
 public class PreferencesCSVOptionsProvider implements ICsvOptionsProvider {
@@ -32,7 +32,9 @@ public class PreferencesCSVOptionsProvider implements ICsvOptionsProvider {
     private String commentChar;
     private String defaultPage;
     private String textQualifier;
-
+    private String inCellDelimiter;
+    private String regexTableMarker;
+    
     public PreferencesCSVOptionsProvider ()
     {
         useFirstLineAsHeader =
@@ -47,9 +49,12 @@ public class PreferencesCSVOptionsProvider implements ICsvOptionsProvider {
             Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.TEXT_QUALIFIER);
         useQualifier =
             Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.USE_QUALIFIER);
-
         defaultPage =
             Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.DEFAULT_VIEW_PAGE);
+        inCellDelimiter =
+                Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.INCELL_DELIMITER);
+        regexTableMarker =
+                Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.REGEX_HEADER_TABLE);
     }
 
     public String getCustomDelimiter () {
@@ -78,5 +83,13 @@ public class PreferencesCSVOptionsProvider implements ICsvOptionsProvider {
 
     public boolean useTextQualifier() {
         return useQualifier;
+    }
+
+    public String getRegexTableMarker() {
+        return regexTableMarker;
+    }
+    
+    public String getInCellDelimiter() {
+        return inCellDelimiter;
     }
 }

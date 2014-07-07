@@ -27,6 +27,7 @@ import com.csvreader.CsvWriter;
 /**
  *
  * @author fhenri
+ * @author msavy
  *
  */
 public abstract class AbstractCSVFile implements IRowChangesListener {
@@ -87,6 +88,18 @@ public abstract class AbstractCSVFile implements IRowChangesListener {
      */
     public abstract boolean useQualifier();
 
+    /**
+     * Get the delimiter used to separate different values in a same csv cell
+     * @return the delimiter used to separate values
+     */
+    public abstract String getInCellDelimiter();
+    
+    /**
+     * Get the pattern to identify a column header where values can be splitted with the inCellDelimiter
+     * and displayed in a table instead of a textfield
+     * @return the regex
+     */
+    public abstract String getRegexTableMarker();
 
     /**
      * @param text
@@ -185,9 +198,9 @@ public abstract class AbstractCSVFile implements IRowChangesListener {
                 header.add(entry);
             }
 
-            for (int i = header.size(); i < nbOfColumns; i++) {
+/*            for (int i = header.size(); i < nbOfColumns; i++) {
                 header.add("");
-            }
+            }*/
         } else {
             for (int i = 1; i < nbOfColumns + 1; i++) {
                 header.add("Column" + i);
@@ -212,21 +225,6 @@ public abstract class AbstractCSVFile implements IRowChangesListener {
     // ----------------------------------
     // Helper method on rows management
     // ----------------------------------
-    
-    /**
-     * @param row
-     */
-    public void duplicateRow (CSVRow row) {
-        CSVRow newRow = new CSVRow(row,  this);
-        int indexRow = findRow(row);
-        if (indexRow != -1) {
-            rows.add(indexRow, newRow);
-        }
-        else {
-            addRow(newRow);
-        }
-    }
-    
     /**
      *
      */
@@ -248,7 +246,20 @@ public abstract class AbstractCSVFile implements IRowChangesListener {
     public void addRowAfterElement (CSVRow row) {
         CSVRow newRow = CSVRow.createEmptyLine(nbOfColumns,  this);
         int indexRow = findRow(row);
-        
+        if (indexRow != -1) {
+            rows.add(indexRow, newRow);
+        }
+        else {
+            addRow(newRow);
+        }
+    }
+    
+    /**
+     * @param row
+     */
+    public void duplicateRow (CSVRow row) {
+        CSVRow newRow = new CSVRow(row,  this);
+        int indexRow = findRow(row);
         if (indexRow != -1) {
             rows.add(indexRow, newRow);
         }
@@ -438,6 +449,7 @@ public abstract class AbstractCSVFile implements IRowChangesListener {
                 if (row.isCommentLine()) {
                     clw.writeComment(row.getComment());
                 } else {
+                	String[] ab = row.getEntriesAsArray();
                     clw.writeRecord(row.getEntriesAsArray());
                 }
             }

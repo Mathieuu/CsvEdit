@@ -23,6 +23,7 @@ import java.util.List;
  * Represents a row made of String elements
  *
  * @author fhenri
+ * @author msavy
  *
  */
 public class CSVRow {

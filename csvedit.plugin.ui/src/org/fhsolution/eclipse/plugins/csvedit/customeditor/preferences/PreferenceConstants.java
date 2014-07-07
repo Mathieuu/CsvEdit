@@ -18,6 +18,7 @@ package org.fhsolution.eclipse.plugins.csvedit.customeditor.preferences;
  * Constant definitions for plug-in preferences
  *
  * @author fhenri
+ * @author msavy
  *
  */
 public class PreferenceConstants {
@@ -28,6 +29,7 @@ public class PreferenceConstants {
     public static final String COMMENT_CHAR = "commentCharPreference";
     public static final String TEXT_QUALIFIER = "textQualifierPreference";
     public static final String USE_QUALIFIER = "useQualifierPreference";
-
+    public static final String INCELL_DELIMITER = "inCellDelimiter";
+    public static final String REGEX_HEADER_TABLE = "regexHeaderTable";
     public static final String DEFAULT_VIEW_PAGE = "defaultPagePreference";
 }
