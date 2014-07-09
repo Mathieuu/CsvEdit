@@ -245,9 +245,13 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements
 			public void widgetSelected(SelectionEvent e) {
 				CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer
 						.getSelection()).getFirstElement();
-				if (row != null) {
-					model.removeRow(row);
-					tableModified();
+				
+				while(row != null){
+					row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+					if (row != null) {
+						model.removeRow(row);
+						tableModified();
+					}
 				}
 			}
 		});

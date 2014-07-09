@@ -165,21 +165,17 @@ public class DetailedEditor {
 		for (int i = 0; i < headerList.size() && !headerList.get(i).equals(""); i++) {
 
 			Label label = new Label(composite, SWT.NONE);
-			label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-					false, 1, 1));
-
-			System.out.println("Reg vaut " + regexTableMarker);
+			label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+			
 			if (headerList.get(i).matches(regexTableMarker)) {
-				DetailedAttributeTableViewer tableViewer = new DetailedAttributeTableViewer(
-						composite);
+				DetailedAttributeTableViewer tableViewer = new DetailedAttributeTableViewer(composite);
 				componentList.add(tableViewer);
 
 			} else {
 				label.setText(headerList.get(i));
 
 				Text text = new Text(composite, SWT.BORDER);
-				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-						false, 1, 1));
+				text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 				componentList.add(text);
 			}
 		}
@@ -211,8 +207,7 @@ public class DetailedEditor {
 				List<String[]> content = new ArrayList<String[]>();
 				if (!(column1.length == 1 && column1[0].equals("")))
 					content.add(column1);
-				((DetailedAttributeTableViewer) componentList.get(i))
-						.fillTable(headers, content);
+				((DetailedAttributeTableViewer) componentList.get(i)).fillTable(headers, content);
 			}
 		}
 	}
@@ -243,8 +238,7 @@ public class DetailedEditor {
 
 				String finalStr = updatedStr.toString();
 				if (finalStr.length() > 0
-						&& (finalStr.substring(finalStr.length() - 3,
-								finalStr.length()).equals(" | "))) {
+						&& (finalStr.substring(finalStr.length() - 3, finalStr.length()).equals(" | "))) {
 					finalStr = finalStr.substring(0, finalStr.length() - 3);
 				}
 

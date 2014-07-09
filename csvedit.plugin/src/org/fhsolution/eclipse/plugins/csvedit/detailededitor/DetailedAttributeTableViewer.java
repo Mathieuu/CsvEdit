@@ -56,7 +56,7 @@ public class DetailedAttributeTableViewer {
      */
 	public DetailedAttributeTableViewer(Composite composite) {
 		
-		tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION);
+		tableViewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION  | SWT.MULTI);
 		Table table = tableViewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -192,10 +192,15 @@ public class DetailedAttributeTableViewer {
 		deleteColumnItem.setSelection(false);
 		deleteColumnItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				
 				AttributeRow row = (AttributeRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
-				if (row != null) {
-					model.remove(model.indexOf(row));
-					tableViewer.refresh();
+				
+				while(row != null){
+					row = (AttributeRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+					if (row != null) {
+						model.remove(model.indexOf(row));
+						tableViewer.refresh();
+					}
 				}
 			}
 		});

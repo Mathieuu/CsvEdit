@@ -35,8 +35,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
         store.setDefault(PreferenceConstants.USE_FIRST_LINE_AS_HEADER, true);
         store.setDefault(PreferenceConstants.CASE_SENSITIVE_SEARCH, false);
-        store.setDefault(PreferenceConstants.CUSTOM_DELIMITER, "	");
-        store.setDefault(PreferenceConstants.TEXT_QUALIFIER, "");
+        store.setDefault(PreferenceConstants.CUSTOM_DELIMITER, ",");
+        store.setDefault(PreferenceConstants.TEXT_QUALIFIER, "\"");
         store.setDefault(PreferenceConstants.USE_QUALIFIER, false);
 
         store.setDefault(PreferenceConstants.DEFAULT_VIEW_PAGE, "0");
