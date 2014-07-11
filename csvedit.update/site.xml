@@ -15,5 +15,8 @@
    <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.1.2.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.1.2">
       <category name="CSV Editor"/>
    </feature>
+   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.2.0.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.2.0">
+      <category name="CSV Editor"/>
+   </feature>
    <category-def name="CSV Editor" label="CSV Editor"/>
 </site>
