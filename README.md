@@ -51,6 +51,8 @@ To do so, go in preferences/CSV Editor Preferences:
 
 ## How to get the latest version
 
-The latest version (1.2) is available [on source forge](https://sourceforge.net/projects/csvedit/files/latest/download).
+The latest version (1.2) is available with update-site. This is definitly the easiest and straightforward way to install the plugin.
 
-Extract jars from zip file and put them in .../eclipse/plugins folder.
+In Eclipse, help, install new software, add the following URL and follow the instructions.
+
+[https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/)
