@@ -68,7 +68,7 @@ public class DefaultCSVFile extends AbstractCSVFile {
     public char getTextQualifier() {
         String qualifierChar = optionsProvider.getTextQualifier();
         char result = Character.UNASSIGNED;
-        if (qualifierChar != null && qualifierChar != "") {
+        if (qualifierChar != null && qualifierChar != "" && qualifierChar.length() > 0) {
            result = qualifierChar.charAt(0);
         }
         return result;
