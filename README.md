@@ -36,14 +36,21 @@ CSVEdit make CSVFile edition easier.
 
 ## New features of 1.2.x
 
-In the new CSVEdit version, it is now possible to edit a row of your CSV file in a form:
+In the new CSVEdit version, it is now possible to edit a row in a form.
 
 ![Detailed edition](http://mathieusavy.com/images/github/CSVEdit-detailed.png "Detailed edition")
 
-It is possible to specify columns containing multiple values and their delimiter. The
+And even specify columns containing multiple values and their delimiter.
+
+To do so, go in preferences/CSV Editor Preferences:
+
++ in `header regex` put a regex matching a part of all column headers you want to display as a table. For instance, the picture below uses the regex (customer|order_id).
++ in `delimiter to use as value delimiter`, put the delimiter separating each value in your cell.
 
 ![List with multivalues](http://mathieusavy.com/images/github/CSVEdit-multivalues.png "List with multivalues")
 
 ## How to get the latest version
 
-LINK AVAILABLE SOON
+The latest version (1.2) is available [on source forge](https://sourceforge.net/projects/csvedit/files/latest/download).
+
+Extract jars from zip file and put them in .../eclipse/plugins folder.
