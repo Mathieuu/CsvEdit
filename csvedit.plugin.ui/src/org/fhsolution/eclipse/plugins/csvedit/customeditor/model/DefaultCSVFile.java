@@ -14,6 +14,9 @@
  */
 package org.fhsolution.eclipse.plugins.csvedit.customeditor.model;
 
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import org.fhsolution.eclipse.plugins.csvedit.model.AbstractCSVFile;
 import org.fhsolution.eclipse.plugins.csvedit.model.ICsvOptionsProvider;
 
@@ -86,6 +89,16 @@ public class DefaultCSVFile extends AbstractCSVFile {
 
     @Override
     public String getRegexTableMarker() {
-        return optionsProvider.getRegexTableMarker();
+    	
+    	String result = "";
+    	
+        try {
+            Pattern.compile(optionsProvider.getRegexTableMarker());
+            result = optionsProvider.getRegexTableMarker();
+        } catch (PatternSyntaxException exception) {
+        
+        }
+        
+        return result;
     }
 }
