@@ -13,6 +13,15 @@ This repository is a fork of [https://code.google.com/p/csvedit/](https://code.g
 
 As soon as a relevant feature will be mature enough, it will be added in the original repository.
 
+### How to get the latest version
+
+The latest version (1.2) is available with update-site. This is definitly the easiest and straightforward way to install the plugin.
+
+In Eclipse, help, install new software, add the following URL and follow the instructions.
+
+[https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/)
+
+
 ###CSVEdit
 
 CSVEdit make CSVFile edition easier.
@@ -48,11 +57,3 @@ To do so, go in preferences/CSV Editor Preferences:
 + in `delimiter to use as value delimiter`, put the delimiter separating each value in your cell.
 
 ![List with multivalues](http://mathieusavy.com/images/github/CSVEdit-multivalues.png "List with multivalues")
-
-## How to get the latest version
-
-The latest version (1.2) is available with update-site. This is definitly the easiest and straightforward way to install the plugin.
-
-In Eclipse, help, install new software, add the following URL and follow the instructions.
-
-[https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/)
