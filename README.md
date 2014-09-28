@@ -6,7 +6,7 @@ CSV Editor plugin for Eclipse
 ## What is this ?
 
 ### Warning
-This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/). It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository. 
+This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/). It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
 
 - The current stable release available on Eclipse Marketplace is 1.1.3.
 - The version available in this repository is 1.2.x
@@ -47,7 +47,7 @@ CSVEdit make CSVFile edition easier.
 
 In the new CSVEdit version, it is now possible to edit a row in a form.
 
-![Detailed edition](http://mathieusavy.com/images/github/CSVEdit-detailed.png "Detailed edition")
+![Detailed edition](http://www.mathieusavy.com/images/github/CSVEdit-detailed.png "Detailed edition")
 
 And even specify columns containing multiple values and their delimiter.
 
@@ -56,4 +56,4 @@ To do so, go in preferences/CSV Editor Preferences:
 + in `header regex` put a regex matching a part of all column headers you want to display as a table. For instance, the picture below uses the regex (customer|order_id).
 + in `delimiter to use as value delimiter`, put the delimiter separating each value in your cell.
 
-![List with multivalues](http://mathieusavy.com/images/github/CSVEdit-multivalues.png "List with multivalues")
+![List with multivalues](http://www.mathieusavy.com/images/github/CSVEdit-multivalues.png "List with multivalues")
