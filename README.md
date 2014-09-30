@@ -6,6 +6,7 @@ CSV Editor plugin for Eclipse
 ## What is this ?
 
 ### Warning
+
 This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/). It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
 
 - The current stable release available on Eclipse Marketplace is 1.1.3.
