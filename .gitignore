@@ -1,3 +1,6 @@
+# maven tycho build output
+target
+
 *.pydevproject
 .metadata
 .gradle
