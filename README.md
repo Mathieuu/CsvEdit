@@ -62,3 +62,8 @@ To do so, go in preferences/CSV Editor Preferences:
 + in `delimiter to use as value delimiter`, put the delimiter separating each value in your cell.
 
 ![List with multivalues](http://www.mathieusavy.com/images/github/CSVEdit-multivalues.png "List with multivalues")
+
+<a href="http://with-eclipse.github.io/" target="_blank">
+<img alt="with-Eclipse logo" src="http://with-eclipse.github.io/with-eclipse-0.jpg" />
+</a>
+
