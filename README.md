@@ -24,10 +24,10 @@ The latest version (1.2) is available with update-site. This is definitly the ea
 
 In Eclipse, help, install new software, add the following URL and follow the instructions.
 
-[https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/)
+[https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/site.xml](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/site.xml)
 
 
-###CSVEdit
+### CSVEdit
 
 CSVEdit make CSVFile edition easier.
 
