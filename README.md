@@ -5,15 +5,15 @@ CSV Editor plugin for Eclipse
 
 ## Deprecation warning
 
-This project is no longer maintained. If you wish to take it from here, feel free to ask for push access or to fork it. I will happily put a link to the new repo. 
+This project is looking for owner. If you wish to take it from here, feel free to ask for push access or tell about new fork. I will happily put a link to the new repo. 
 
 ## What is this ?
 
 ### Warning
 
-This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/). It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
+This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/) created by Mathieu Savy in 2104. It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
 
-- The current stable release available on Eclipse Marketplace is 1.1.3.
+- The current stable release 1.1.3 is not available [on Eclipse Marketplace](https://marketplace.eclipse.org/content/csv-edit).
 - The version available in this repository is 1.2.x
 
 As soon as a relevant feature will be mature enough, it will be added in the original repository.
