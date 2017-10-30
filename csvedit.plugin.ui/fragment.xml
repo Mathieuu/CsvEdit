@@ -18,7 +18,7 @@
       <page
             class="org.fhsolution.eclipse.plugins.csvedit.customeditor.preferences.CSVPreferencePage"
             id="org.fhsolution.eclipse.plugins.csvedit.preferences.CSVPreferencePage"
-            name="CSV Editor Preferences">
+            name="CSV Editor">
       </page>
    </extension>
    <extension
