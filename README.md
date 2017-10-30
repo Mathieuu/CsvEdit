@@ -9,14 +9,12 @@ This project is looking for owner. If you wish to take it from here, feel free t
 
 ## What is this ?
 
-### Warning
-
 This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/) created by Mathieu Savy in 2104. It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
 
-- The current stable release 1.1.3 is not available [on Eclipse Marketplace](https://marketplace.eclipse.org/content/csv-edit).
+- The previouhs stable release 1.1.3 was available [on Eclipse Marketplace](https://marketplace.eclipse.org/content/csv-edit).
 - The version available in this repository is 1.2.x
 
-As soon as a relevant feature will be mature enough, it will be added in the original repository.
+The intention was to contribbute features from here to the original repository once they are mature.
 
 ### How to get the latest version
 
@@ -26,6 +24,7 @@ In Eclipse, help, install new software, add the following URL and follow the ins
 
 [https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/site.xml](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/site.xml)
 
+Other option is to build from sources with maven `mvn package` and install from local repository archive, that will be in `csvedit.site/target/repository`.
 
 ### CSVEdit
 
@@ -48,7 +47,11 @@ CSVEdit make CSVFile edition easier.
 	- Sorting data in column
 	- Manage your own CSV settings
 
-## New features of 1.2.x
+## Hsitory
+
+Optional maven/tycho build was added in 2017 by Paul Verest.
+
+### New features of 1.2.x
 
 In the new CSVEdit version, it is now possible to edit a row in a form.
 
