@@ -18,13 +18,15 @@ The intention was to contribbute features from here to the original repository o
 
 ### How to get the latest version
 
-The latest version (1.2) is available with update-site. This is definitly the easiest and straightforward way to install the plugin.
+1. The latest version (1.2) 2017-10-31 built is available with update-site `http://www.nodeclipse.org/updates/csvedit/`. 
+In Eclipse Help -> Install new software, add the URL and follow the instructions.
 
-In Eclipse, help, install new software, add the following URL and follow the instructions.
-
+2. Or from this repository: 
 [https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/site.xml](https://raw.githubusercontent.com/SegFaultError/CsvEdit/master/csvedit.update/site.xml)
 
-Other option is to build from sources with maven `mvn package` and install from local repository archive, that will be in `csvedit.site/target/repository`.
+3. Offline site archive from GitHub releases.
+
+4. Other option is to build from sources with maven `mvn package` and install from local repository archive, that will be in `csvedit.site/target/repository`.
 
 ### CSVEdit
 
