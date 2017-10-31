@@ -15,12 +15,12 @@ Code overview
 
 ## What is this ?
 
-This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/) created by Mathieu Savy in 2104. It contains the latest functionnalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
+This repository is a fork of [https://code.google.com/p/csvedit/](https://code.google.com/p/csvedit/) created by Mathieu Savy in 2104. It contains the latest functionalities available for CSVEdit but most of the new features are still being tested. If you look for a more reliable version of the plugin you should probably visit the original repository.
 
-- The previouhs stable release 1.1.3 was available [on Eclipse Marketplace](https://marketplace.eclipse.org/content/csv-edit).
+- The previous stable release 1.1.3 was available [on Eclipse Marketplace](https://marketplace.eclipse.org/content/csv-edit).
 - The version available in this repository is 1.2.x
 
-The intention was to contribbute features from here to the original repository once they are mature.
+The intention was to contribute features from here to the original repository once they are mature.
 
 ### How to get the latest version
 
@@ -44,7 +44,7 @@ CSVEdit make CSVFile edition easier.
 
 + Edit from a table view representing the csv data
 
-	The table editing is definitly the added value of the plugin and allows a bunch of operation on your csv file among the following features
+	The table editing is definitely the added value of the plugin and allows a bunch of operation on your csv file among the following features
 
 	- Easy editing of data
 	- Insertion and deletion of table rows
