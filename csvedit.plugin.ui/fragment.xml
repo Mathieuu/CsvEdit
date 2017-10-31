@@ -7,7 +7,7 @@
             class="org.fhsolution.eclipse.plugins.csvedit.customeditor.DefaultCSVMultipageEditor"
             contributorClass="org.fhsolution.eclipse.plugins.csvedit.editors.MultiPageCSVEditorContributor"
             default="true"
-            extensions="csv"
+            extensions="csv,tab,tsv"
             icon="icons/csv.gif"
             id="org.fhsolution.eclipse.plugins.csvedit.editor.CustomizableCSVEditor"
             name="Default CSV Editor">
