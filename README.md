@@ -7,7 +7,11 @@ CSV Editor plugin for Eclipse
 
 This project is looking for owner.  
 That means DoItYourself: raise issue, for it to be noticed. Want to make change, clone locally and develop, it is Java and maven build.
-If you wish to take it from here, feel free to ask for push access or tell about new fork. I will happily put a link to the new repo. 
+If you wish to take it from here, feel free to ask for push access or tell about new fork. I will happily put a link to the new repo.
+
+Code overview
+
+![](images/code_overview.png)
 
 ## What is this ?
 
@@ -50,8 +54,12 @@ CSVEdit make CSVFile edition easier.
 	- Manage your column with moving/resizing columns
 	- Sorting data in column
 	- Manage your own CSV settings
+	
+![](images/Editor_Table_Tab.png)
+![](images/Editor_Source_Tab.png)
+![](images/Preferences.png)	
 
-## Hsitory
+## History
 
 Optional maven/tycho build was added in 2017 by Paul Verest.
 
