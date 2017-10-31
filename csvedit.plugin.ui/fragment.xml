@@ -10,7 +10,7 @@
             extensions="csv,tab,tsv"
             icon="icons/csv.gif"
             id="org.fhsolution.eclipse.plugins.csvedit.editor.CustomizableCSVEditor"
-            name="Default CSV Editor">
+            name="CSV Edit(or)">
       </editor>
    </extension>
    <extension
