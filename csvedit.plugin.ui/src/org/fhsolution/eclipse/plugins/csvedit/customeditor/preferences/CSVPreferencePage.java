@@ -99,7 +99,7 @@ implements IWorkbenchPreferencePage {
 
         addField(new BooleanFieldEditor(
                 PreferenceConstants.CASE_SENSITIVE_SEARCH,
-                "&make filtering case sensitive",
+                "&Case sensitive filtering",
                 getFieldEditorParent()));
         
         
@@ -113,6 +113,7 @@ implements IWorkbenchPreferencePage {
         StringFieldEditor incellDelimiterField = new StringFieldEditor(
                 PreferenceConstants.INCELL_DELIMITER,
                 "Delimiter to use as a value delimiter in a cell", StringFieldEditor.UNLIMITED, getFieldEditorParent());
+        //incellDelimiterField.setTextLimit(1); //TODO test: does it really work with more than 1 character delimiter
         incellDelimiterField.setEmptyStringAllowed(true);
         addField(incellDelimiterField);
 
