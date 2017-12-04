@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.fhsolution.eclipse.feature.csvedit"
-      label="csvedit"
+      label="CSV Edit"
       version="1.2.0"
       provider-name="www.fhsolution.com"
       plugin="org.fhsolution.eclipse.plugins.csvedit">
