@@ -5,9 +5,8 @@ CSV Editor plugin for Eclipse
 
 ## Status
 
-This project is looking for owner.  
-That means DoItYourself: raise issue, for it to be noticed. Want to make change, clone locally and develop, it is Java and maven build.
-If you wish to take it from here, feel free to ask for push access or tell about new fork. I will happily put a link to the new repo.
+Feel free to clone, edit, build and release (just update version and/or name of your fork, so make it clear for users)
+or ask for push access here. Tell about new fork by adding new issue. I will happily put a link to the new repo.
 
 Code overview
 
