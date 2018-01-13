@@ -8,9 +8,6 @@ CSV Editor plugin for Eclipse
 Feel free to clone, edit, build and release (just update version and/or name of your fork, so make it clear for users)
 or ask for push access here. Tell about new fork by adding new issue. I will happily put a link to the new repo.
 
-Code overview
-
-![](images/code_overview.png)
 
 ## What is this ?
 
@@ -81,6 +78,10 @@ To do so, go in preferences/CSV Editor Preferences:
 + in `delimiter to use as value delimiter`, put the delimiter separating each value in your cell.
 
 ![List with multivalues](http://www.mathieusavy.com/images/github/CSVEdit-multivalues.png "List with multivalues")
+
+## Code overview
+
+![](images/code_overview.png)
 
 <a href="http://with-eclipse.github.io/" target="_blank">
 <img alt="with-Eclipse logo" src="http://with-eclipse.github.io/with-eclipse-0.jpg" />
