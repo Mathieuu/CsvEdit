@@ -20,12 +20,13 @@ The intention was to contribute features from here to the original repository on
 
 ### How to get the latest version
 
+HELP WANTED WITH PUBLISHING 1.2+ build
 
-0. Via Eclipse marketplace at <https://marketplace.eclipse.org/content/csv-edit-resurrector>  
+0. NOT AVAILABLE Via Eclipse marketplace at <https://marketplace.eclipse.org/content/csv-edit-resurrector>  
 or drag-n-drop the image on the Eclipse toolbar  
 [![Drag onto your running Eclipse toolbar. *Requires Eclipse Marketplace Client](images/resurrector-CSV-logo.png)](http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=3739198)
 
-1. The latest version (1.2) 2017-10-31 built is available with update-site `http://www.nodeclipse.org/updates/csvedit/`. 
+1. NOT AVAILABLE The latest version (1.2) 2017-10-31 built is NO LONGER available with update-site `http://www.nodeclipse.org/updates/csvedit/`. 
 In Eclipse Help -> Install new software, add the URL and follow the instructions.
 
 2. Or from this repository: 
