@@ -8,7 +8,7 @@
             contributorClass="org.fhsolution.eclipse.plugins.csvedit.editors.MultiPageCSVEditorContributor"
             default="true"
             extensions="csv,tab,tsv"
-            icon="icons/csv.gif"
+            icon="icons/csv.png"
             id="org.fhsolution.eclipse.plugins.csvedit.editor.CustomizableCSVEditor"
             name="CSV Edit(or)">
       </editor>

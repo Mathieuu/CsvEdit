@@ -32,10 +32,16 @@ RemoteSystemsTempFiles/
 # PDT-specific
 .buildpath
 
-# sbteclipse plugin 
+# sbteclipse plugin
 .target
 
 # TeXlipse plugin
 .texlipse
 
 internalChangelog.txt
+
+.project
+.classpath
+
+# tycho artifacts
+.polyglot*

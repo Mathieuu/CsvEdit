@@ -3,19 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.nodeclipse</groupId>
   <artifactId>csvedit</artifactId>
-  <version>1.2.0-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>csvedit :: parent</name>
   <description>csvedit parent</description>
 
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
-
   <properties>
-    <java.version>1.6</java.version>
-  	<maven.version>3.0</maven.version>
-  	<tycho.version>1.0.0</tycho.version>
+    <java.version>17</java.version>
+  	<tycho.version>3.0.4</tycho.version>
   	<tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -24,14 +19,14 @@
     <repository>
       <id>luna</id>
       <layout>p2</layout>
-      <url>http://download.eclipse.org/releases/luna</url>
+      <url>https://download.eclipse.org/releases/latest</url>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
       <id>sonatype-public</id>
-      <url>http://repository.sonatype.org/content/groups/sonatype-public-grid</url>
+      <url>https://repository.sonatype.org/content/groups/sonatype-public-grid</url>
     </pluginRepository>
   </pluginRepositories>
 
@@ -51,7 +46,6 @@
         <configuration>
           <resolver>p2</resolver>
           <pomDependencies>consider</pomDependencies>
-          <ignoreTychoRepositories>true</ignoreTychoRepositories>
         </configuration>
       </plugin>
     </plugins>
@@ -83,16 +77,16 @@
         <plugin>
         	<groupId>org.apache.maven.plugins</groupId>
         	<artifactId>maven-assembly-plugin</artifactId>
-        	<version>2.3</version>
+        	<version>3.5.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
-  </build>  
+  </build>
   <modules>
     <module>csvedit.plugin</module>
     <module>csvedit.plugin.ui</module>
     <module>csvedit.feature</module>
-    <!-- 
+    <!--
      -->
     <module>csvedit.site</module>
   </modules>
