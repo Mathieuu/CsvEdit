@@ -1,41 +1,6 @@
 # maven tycho build output
-target
-
-*.pydevproject
-.metadata
-.gradle
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
+target/
 .settings/
-.loadpath
-
-# Runtime Eclipse
-runtime-EclipseApplication/
-
-# Temp filesystem
-RemoteSystemsTempFiles/
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# CDT-specific
-.cproject
-
-# PDT-specific
-.buildpath
-
-# sbteclipse plugin 
-.target
-
-# TeXlipse plugin
-.texlipse
-
-internalChangelog.txt
+.project
+.classpath
+.polyglot.build.properties

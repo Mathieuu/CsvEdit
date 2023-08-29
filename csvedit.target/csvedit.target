@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde?>
+<target name="Eclipse latest" sequenceNumber="1506582696">
+  <locations>
+    <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+      <unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.p2.discovery.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
+      <repository id="eclipse-latest" location="https://download.eclipse.org/releases/latest/"/>
+    </location>
+      <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+
+          <feature id="me.glindholm.eclipse.plugin.csvedit" label="target" version="1.0.0.qualifier">
+
+   
+
+   
+
+   
+
+   
+
+   
+              <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+              <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+              <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+              <plugin download-size="0" id="wrapped.org.jumpmind.symmetric.symmetric-csv.source" install-size="0" unpack="false" version="0.0.0"/>
+              <plugin download-size="0" id="wrapped.org.jumpmind.symmetric.symmetric-csv" install-size="0" unpack="false" version="0.0.0"/>
+          </feature>
+          <dependencies>
+              <dependency>
+                  <groupId>org.jumpmind.symmetric</groupId>
+                  <artifactId>symmetric-csv</artifactId>
+                  <version>2.5.13</version>
+                  <type>jar</type>
+              </dependency>
+          </dependencies>
+      </location>
+  </locations>
+</target>
