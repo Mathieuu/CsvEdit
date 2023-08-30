@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.fhsolution.eclipse.feature.csvedit"
+      id="me.glindholm.eclipse.feature.csvedit"
       label="CSV Edit"
-      version="1.2.0"
+      version="2.0.0"
       provider-name="www.fhsolution.com"
       plugin="me.glindholm.eclipse.plugin.csvedit">
 
@@ -63,6 +63,13 @@ permissions and limitations under the License.
          install-size="0"
          version="0.0.0"
          fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.org.jumpmind.symmetric.symmetric-csv"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

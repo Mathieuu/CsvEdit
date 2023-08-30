@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="csvedit update site" url="http://csvedit.googlecode.com/svn/trunk/csvedit.update">
+   <description name="csvedit update site" url="https://csvedit.googlecode.com/svn/trunk/csvedit.update">
       Update site for the csvedit eclipse plugin
    </description>
-   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.0.3.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.0.3">
-      <category name="CSV Editor"/>
-   </feature>
-   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.1.0.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.1.0">
-      <category name="CSV Editor"/>
-   </feature>
-   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.1.1.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.1.1">
-      <category name="CSV Editor"/>
-   </feature>
-   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.1.2.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.1.2">
-      <category name="CSV Editor"/>
-   </feature>
-   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.2.0.jar" id="org.fhsolution.eclipse.feature.csvedit" version="1.2.0">
+   <feature url="features/me.glindholm.eclipse.feature.csvedit_2.0.0.jar" id="me.glindholm.eclipse.feature.csvedit" version="2.0.0">
       <category name="CSV Editor"/>
    </feature>
    <category-def name="CSV Editor" label="CSV Editor"/>

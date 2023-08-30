@@ -16,7 +16,23 @@
         <tycho.version>4.0.2</tycho.version>
         <tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <github-update-repo>
+            git@github.com:gnl42/CsvEdit2-update.git</github-update-repo>
+        <github-local-clone>${project.build.directory}/checkout</github-local-clone>
+        <releases-directory>${github-local-clone}/releases</releases-directory>
+        <current-release-directory>${releases-directory}/${qualifiedVersion}</current-release-directory>
+        <!-- The label for the Composite sites -->
+        <site.label>CsvEdit2-update</site.label>
+        <eclipse.version>2023-06</eclipse.version>
     </properties>
+
+    <scm>
+        <connection>scm:git@github.com:gnl42/CsvEdit2.git</connection>
+        <developerConnection>scm:git@github.com:gnl42/CsvEdit2.git</developerConnection>
+        <url>https://github.com/gnl42/CsvEdit2</url>
+    </scm>
+
 
     <repositories>
         <repository>
@@ -25,15 +41,6 @@
             <url>http://download.eclipse.org/releases/2023-06</url>
         </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>sonatype-public</id>
-            <url>
-                http://repository.sonatype.org/content/groups/sonatype-public-grid</url>
-        </pluginRepository>
-    </pluginRepositories>
-
 
     <build>
         <pluginManagement>

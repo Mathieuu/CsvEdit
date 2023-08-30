@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse CSV Editor
 Bundle-SymbolicName: me.glindholm.eclipse.plugin.csvedit;singleton:=true
-Bundle-Version: 1.2.0
+Bundle-Version: 2.0.0
 Bundle-Activator: me.glindholm.eclipse.plugin.csvedit.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.ui,
@@ -23,4 +23,4 @@ Export-Package: me.glindholm.eclipse.plugin.csvedit.editors;
    org.eclipse.jface.viewers,
    me.glindholm.eclipse.plugin.csvedit.model,
    org.eclipse.ui.part",
- me.glindholm.eclipse.plugin.csvedit.model;uses:="com.csvreader"
+ me.glindholm.eclipse.plugin.csvedit.model

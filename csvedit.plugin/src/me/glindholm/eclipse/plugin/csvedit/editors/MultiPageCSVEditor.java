@@ -65,10 +65,10 @@ import me.glindholm.eclipse.plugin.csvedit.providers.CSVLabelProvider;
 import me.glindholm.eclipse.plugin.csvedit.sorter.CSVTableSorter;
 
 /**
- * 
+ *
  * @author fhenri
  * @author msavy
- * 
+ *
  */
 public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements IResourceChangeListener {
 
@@ -107,7 +107,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
     /**
      * Create the CSV file object. Class that extends the MultiPageCSVEditor <i>must</i> implement this
      * class.
-     * 
+     *
      * @return an {@link AbstractCSVFile} object which provides the contents as well as some formatting
      *         information such as the delimiter and extra meta information
      */
@@ -115,7 +115,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
     /**
      * Creates the pages of the multi-page editor.
-     * 
+     *
      * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()
      */
     @Override
@@ -245,7 +245,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
          * tableViewer.refresh(); tableModified(); } } } });
          */
         /*
-         * 
+         *
          * // manage 1st line - should only be visible if global option is set if
          * (pref.getUseFirstLineAsHeader()) { Label encodingLineLabel = new Label(canvas, SWT.NONE);
          * encodingLineLabel.setText("Display 1st line"); final Button encodingLineBtn = new Button(canvas,
@@ -266,7 +266,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
         // set the sorter for the table
         tableSorter = new CSVTableSorter();
-        tableViewer.setSorter(tableSorter);
+        tableViewer.setComparator(tableSorter);
 
         // set a table filter
         final CSVTableFilter tableFilter = new CSVTableFilter();
@@ -293,18 +293,18 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
          * TableCursor(table, SWT.NONE); // create an editor to edit the cell when the user hits "ENTER" //
          * while over a cell in the table final ControlEditor editor = new ControlEditor(cursor);
          * editor.grabHorizontal = true; editor.grabVertical = true;
-         * 
+         *
          * cursor.addSelectionListener(new SelectionAdapter() { // This is called as the user navigates
          * around the table public void widgetSelected(SelectionEvent e) { // Select the row in the table
          * where the TableCursor is table.setSelection(new TableItem[] {cursor.getRow()}); }
-         * 
+         *
          * // when the user hits "ENTER" in the TableCursor, // pop up a text editor so that user can change
          * the text of the cell public void widgetDefaultSelected(SelectionEvent e) { // Begin an editing
          * session final Text text = new Text(cursor, SWT.NONE);
-         * 
+         *
          * // Copy the text from the cell to the Text int column = cursor.getColumn();
          * text.setText(cursor.getRow().getText(column));
-         * 
+         *
          * // Add a handler to detect key presses text.addKeyListener(new KeyAdapter() { public void
          * keyPressed(KeyEvent e) { // tab will save & move to the next column if (e.character == SWT.TAB) {
          * TableItem row = cursor.getRow(); int column = cursor.getColumn(); row.setText(column,
@@ -315,24 +315,24 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
          * (e.character == SWT.ESC) { text.dispose(); } } }); // close the text editor when the user tabs
          * away text.addFocusListener(new FocusAdapter() { public void focusLost(FocusEvent e) {
          * text.dispose(); } }); editor.setEditor(text); text.setFocus(); } });
-         * 
+         *
          * /* // Hide the TableCursor when the user hits the "CTRL" or "SHIFT" key. // This allows the user
          * to select multiple items in the table. cursor.addKeyListener(new KeyAdapter() { public void
          * keyPressed(KeyEvent e) {
-         * 
+         *
          * // delete line if (e.character == SWT.DEL) { TableItem row = cursor.getRow(); tableModified();
          * row.dispose(); //table.showItem(row); //cursor.setSelection(row, 0); }
-         * 
+         *
          * // insert line if (e.character == (char) SWT.F8) { TableItem row = cursor.getRow();
          * row.dispose(); }
-         * 
+         *
          * // add line
-         * 
+         *
          * cursor.setVisible(true); cursor.setFocus();
-         * 
+         *
          * if (e.keyCode == SWT.CTRL || e.keyCode == SWT.SHIFT || (e.stateMask & SWT.CONTROL) != 0 ||
          * (e.stateMask & SWT.SHIFT) != 0) { cursor.setVisible(false); return; } } });
-         * 
+         *
          * // When the user double clicks in the TableCursor, pop up a text editor so that // they can
          * change the text of the cell. cursor.addMouseListener(new MouseAdapter() { public void
          * mouseDown(MouseEvent e) { final Text text = new Text(cursor, SWT.NONE); TableItem row =
@@ -344,16 +344,16 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
          * "ESC" if (e.character == SWT.ESC) { text.dispose(); } } }); // close the text editor when the
          * user clicks away text.addFocusListener(new FocusAdapter() { public void focusLost(FocusEvent e) {
          * text.dispose(); } }); editor.setEditor(text); text.setFocus(); } });
-         * 
+         *
          * // Show the TableCursor when the user releases the "SHIFT" or "CTRL" key. // This signals the end
          * of the multiple selection task. table.addKeyListener(new KeyAdapter() { public void
          * keyReleased(KeyEvent e) {
-         * 
+         *
          * if (e.keyCode == SWT.CONTROL && (e.stateMask & SWT.SHIFT) != 0) return; if (e.keyCode ==
          * SWT.SHIFT && (e.stateMask & SWT.CONTROL) != 0) return; if (e.keyCode != SWT.CONTROL &&
          * (e.stateMask & SWT.CONTROL) != 0) return; if (e.keyCode != SWT.SHIFT && (e.stateMask & SWT.SHIFT)
          * != 0) return;
-         * 
+         *
          * TableItem[] selection = table.getSelection(); TableItem row = (selection.length == 0) ?
          * table.getItem(table.getTopIndex()) : selection[0]; table.showItem(row); cursor.setSelection(row,
          * 0); cursor.setVisible(true); cursor.setFocus(); } });
@@ -361,14 +361,14 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
         /*
          * tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-         * 
+         *
          * public void doubleClick(DoubleClickEvent event) {
-         * 
+         *
          * CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
          * DetailedView input = new DetailedView(Display.getDefault(), model.getHeader(), row);
-         * 
+         *
          * input.open();
-         * 
+         *
          * } });
          */
 
@@ -554,7 +554,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
     /**
      * Find a column in the Table by its name
-     * 
+     *
      * @param columnName
      * @return the index of the Column indicated by its name
      */
@@ -624,7 +624,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
      * disposes all nested editors. This method is automatically called when the editor is closed and
      * marks the end of the editor's life cycle. It cleans up any platform resources, such as images,
      * clipboard, and so on, which were created by this class.
-     * 
+     *
      * @see org.eclipse.ui.part.MultiPageEditorPart#dispose()
      */
     @Override
@@ -638,7 +638,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
      * property changed event (PROP_DIRTY property), reflecting the new dirty state. If the save is
      * canceled via user action, or for any other reason, the part should invoke setCanceled on the
      * IProgressMonitor to inform the caller
-     * 
+     *
      * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
      */
     @Override
@@ -655,7 +655,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
     /**
      * Returns whether the "Save As" operation is supported by this part.
-     * 
+     *
      * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
      */
     @Override
@@ -666,7 +666,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
     /**
      * Saves the multi-page editor's document as another file. Also updates the text for page 0's tab,
      * and updates this multi-page editor's input to correspond to the nested editor's.
-     * 
+     *
      * @see org.eclipse.ui.part.EditorPart#doSaveAs()
      */
     @Override
@@ -687,10 +687,10 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
     /**
      * Initializes this editor with the given editor site and input. This method is automatically called
      * shortly after editor construction; it marks the start of the editor's lifecycle.
-     * 
+     *
      * The <code>MultiPageEditorExample</code> implementation of this method checks that the input is an
      * instance of <code>IFileEditorInput</code>.
-     * 
+     *
      * @see org.eclipse.ui.part.MultiPageEditorPart#init(org.eclipse.ui.IEditorSite,
      *      org.eclipse.ui.IEditorInput)
      */
@@ -730,7 +730,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
     /**
      * Calculates the contents of page 2 when the it is activated.
-     * 
+     *
      * @see org.eclipse.ui.part.MultiPageEditorPart#pageChange(int)
      */
     @Override
@@ -761,7 +761,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
     /**
      * When the focus shifts to the editor, this method is called; it must then redirect focus to the
      * appropriate editor based on which page is currently selected.
-     * 
+     *
      * @see org.eclipse.ui.part.MultiPageEditorPart#setFocus()
      */
     @Override
@@ -778,7 +778,7 @@ public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements 
 
     /**
      * Closes all project files on project close.
-     * 
+     *
      * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
      */
     @Override

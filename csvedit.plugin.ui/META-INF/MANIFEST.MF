@@ -3,8 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-ClassPath: .
 Bundle-Name: Eclipse CSV Editor UI contributions
 Bundle-SymbolicName: me.glindholm.eclipse.plugin.csvedit.ui;singleton:=true
-Bundle-Version: 1.2.0
-Fragment-Host: me.glindholm.eclipse.plugin.csvedit;bundle-version="1.2.0"
+Bundle-Version: 2.0.0
+Fragment-Host: me.glindholm.eclipse.plugin.csvedit;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.core.resources

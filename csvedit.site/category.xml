@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.fhsolution.eclipse.feature.csvedit_1.2.0.qualifier.jar" 
-  					  id="org.fhsolution.eclipse.feature.csvedit" version="1.2.0.qualifier">
+   <feature url="features/me.glindholm.eclipse.feature.csvedit_2.0.0.qualifier.jar"
+              id="me.glindholm.eclipse.feature.csvedit" version="2.0.0.qualifier">
       <category name="tools"/>
    </feature>
    <category-def name="tools" label="Tools"/>

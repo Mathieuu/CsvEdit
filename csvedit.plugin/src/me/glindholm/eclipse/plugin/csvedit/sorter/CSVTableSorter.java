@@ -15,7 +15,7 @@
 package me.glindholm.eclipse.plugin.csvedit.sorter;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 
 import me.glindholm.eclipse.plugin.csvedit.model.CSVRow;
@@ -25,7 +25,7 @@ import me.glindholm.eclipse.plugin.csvedit.model.CSVRow;
  * @author fhenri
  *
  */
-public class CSVTableSorter extends ViewerSorter {
+public class CSVTableSorter extends ViewerComparator {
 
     private int propertyIndex;
     private static final int DESCENDING = 1;
