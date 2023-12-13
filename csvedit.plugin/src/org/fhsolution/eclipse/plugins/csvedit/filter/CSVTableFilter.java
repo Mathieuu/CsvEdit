@@ -37,32 +37,34 @@ public class CSVTableFilter extends ViewerFilter {
      *
      * @param s string to search
      */
-    public void setSearchText (String s, boolean isCaseSensitive) {
+    public void setSearchText(final String s, final boolean isCaseSensitive) {
         // Search must be a substring of the existing value
-        this.searchString = ".*" + s + ".*";
+        searchString = ".*" + s + ".*";
         if (isCaseSensitive) {
-            searchPattern =
-                Pattern.compile(searchString);
+            searchPattern = Pattern.compile(searchString);
         } else {
-            searchPattern =
-                Pattern.compile(searchString, Pattern.CASE_INSENSITIVE);
+            searchPattern = Pattern.compile(searchString, Pattern.CASE_INSENSITIVE);
         }
     }
 
     /**
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer,
+     *      java.lang.Object, java.lang.Object)
      */
     @Override
-    public boolean select (Viewer viewer, Object parentElement, Object element) {
+    public boolean select(final Viewer viewer, final Object parentElement, final Object element) {
 
         if (searchString == null || searchString.length() == 0) {
             return true;
         }
 
         // loop on all column of the current row to find matches
-        CSVRow row = (CSVRow) element;
-        for (String s:row.getEntries()) {
-            Matcher m = searchPattern.matcher(s);
+        final CSVRow row = (CSVRow) element;
+        for (String s : row.getEntries()) {
+            if (s == null) {
+                s = "";
+            }
+            final Matcher m = searchPattern.matcher(s);
             if (m.matches()) {
                 return true;
             }
