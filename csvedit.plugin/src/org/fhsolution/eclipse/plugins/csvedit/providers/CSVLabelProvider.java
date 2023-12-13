@@ -37,12 +37,12 @@ public class CSVLabelProvider extends StyledCellLabelProvider {
 //implements ITableLabelProvider
 
     private String searchText;
-    private Color searchColor;
+    private final Color searchColor;
 
     /**
      *
      */
-    public CSVLabelProvider () {
+    public CSVLabelProvider() {
         searchColor = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
     }
 
@@ -51,7 +51,7 @@ public class CSVLabelProvider extends StyledCellLabelProvider {
      * @param columnIndex
      * @return
      */
-    public Image getColumnImage(Object element, int columnIndex) {
+    public Image getColumnImage(final Object element, final int columnIndex) {
         return null;
     }
 
@@ -60,11 +60,12 @@ public class CSVLabelProvider extends StyledCellLabelProvider {
      * @param columnIndex
      * @return
      */
-    public String getColumnText(Object element, int columnIndex) {
-        CSVRow row = (CSVRow) element;
+    public String getColumnText(final Object element, final int columnIndex) {
+        final CSVRow row = (CSVRow) element;
 
-        if(row.getEntries().size() > columnIndex) {
-            return row.getEntries().get(columnIndex).toString();
+        if (row.getEntries().size() > columnIndex) {
+            final String entry = row.getEntries().get(columnIndex);
+            return entry != null ? entry.toString() : "";
         }
 
         return "";
@@ -73,32 +74,37 @@ public class CSVLabelProvider extends StyledCellLabelProvider {
     /**
      * @see org.eclipse.jface.viewers.BaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
      */
-    public void addListener(ILabelProviderListener listener) {
+    @Override
+    public void addListener(final ILabelProviderListener listener) {
     }
 
     /**
-     * @see org.eclipse.jface.viewers.BaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
+     * @see org.eclipse.jface.viewers.BaseLabelProvider#isLabelProperty(java.lang.Object,
+     *      java.lang.String)
      */
-    public boolean isLabelProperty(Object element, String property) {
+    @Override
+    public boolean isLabelProperty(final Object element, final String property) {
         return true;
     }
 
     /**
      * @see org.eclipse.jface.viewers.BaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
      */
-    public void removeListener(ILabelProviderListener listener) {
+    @Override
+    public void removeListener(final ILabelProviderListener listener) {
     }
 
     /**
      * @param searchText
      */
-    public void setSearchText(String searchText) {
+    public void setSearchText(final String searchText) {
         this.searchText = searchText;
     }
 
     /**
      * @see org.eclipse.jface.viewers.StyledCellLabelProvider#dispose()
      */
+    @Override
     public void dispose() {
     }
 
@@ -106,24 +112,22 @@ public class CSVLabelProvider extends StyledCellLabelProvider {
      * @see org.eclipse.jface.viewers.StyledCellLabelProvider#update(org.eclipse.jface.viewers.ViewerCell)
      */
     @Override
-    public void update(ViewerCell cell) {
-        CSVRow element = (CSVRow) cell.getElement();
-        int index = cell.getColumnIndex();
-        String columnText = getColumnText(element, index);
+    public void update(final ViewerCell cell) {
+        final CSVRow element = (CSVRow) cell.getElement();
+        final int index = cell.getColumnIndex();
+        final String columnText = getColumnText(element, index);
         cell.setText(columnText);
         cell.setImage(getColumnImage(element, index));
         if (searchText != null && searchText.length() > 0) {
-            int intRangesCorrectSize[] =
-                SearchResultStyle.getSearchTermOccurrences(searchText, columnText);
-            List<StyleRange> styleRange = new ArrayList<StyleRange>();
+            final int intRangesCorrectSize[] = SearchResultStyle.getSearchTermOccurrences(searchText, columnText);
+            final List<StyleRange> styleRange = new ArrayList<>();
             for (int i = 0; i < intRangesCorrectSize.length / 2; i++) {
-                StyleRange myStyleRange = new StyleRange(0, 0, null, searchColor);
+                final StyleRange myStyleRange = new StyleRange(0, 0, null, searchColor);
                 myStyleRange.start = intRangesCorrectSize[i];
                 myStyleRange.length = intRangesCorrectSize[++i];
                 styleRange.add(myStyleRange);
             }
-            cell.setStyleRanges(styleRange.toArray(new StyleRange[styleRange
-                    .size()]));
+            cell.setStyleRanges(styleRange.toArray(new StyleRange[styleRange.size()]));
         } else {
             cell.setStyleRanges(null);
         }
