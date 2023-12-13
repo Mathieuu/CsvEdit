@@ -15,12 +15,21 @@
         <tycho.version>4.0.4</tycho.version>
         <tycho.test.jvmArgs>-Xmx512m -XX:MaxPermSize=256m</tycho.test.jvmArgs>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Deploy to github -->
+        <github-update-repo>
+            git@github.com:Mathieuu/CsvEdit-update.git</github-update-repo>
+        <github-local-clone>${project.build.directory}/checkout</github-local-clone>
+        <releases-directory>${github-local-clone}/releases</releases-directory>
+        <current-release-directory>${releases-directory}/${qualifiedVersion}</current-release-directory>
+        <!-- The label for the Composite sites -->
+        <site.label>CsvEdit-update</site.label>
     </properties>
 
     <scm>
-        <connection>scm:git@github.com:gnl42/CsvEdit.git</connection>
-        <developerConnection>scm:git@github.com:gnl42/CsvEdit.git</developerConnection>
-        <url>https://github.com/gnl42/CsvEdit</url>
+        <connection>scm:git@github.com:Mathieuu/CsvEdit.git</connection>
+        <developerConnection>scm:git@github.com:Mathieuu/CsvEdit.git</developerConnection>
+        <url>https://github.com/Mathieuu/CsvEdit</url>
     </scm>
 
 
@@ -261,6 +270,33 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <!-- Activate this profile to perform the release to GitHub Pages -->
+            <id>release-composite</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-install-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>default-install</id>
+                                    <phase>none</phase>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <plugin>
+                            <artifactId>maven-deploy-plugin</artifactId>
+                            <configuration>
+                                <skip>true</skip>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
     <modules>
         <module>csvedit.target</module>
         <module>csvedit.plugin</module>
