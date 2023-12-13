@@ -66,810 +66,792 @@ import org.fhsolution.eclipse.plugins.csvedit.providers.CSVLabelProvider;
 import org.fhsolution.eclipse.plugins.csvedit.sorter.CSVTableSorter;
 
 /**
- * 
+ *
  * @author fhenri
  * @author msavy
- * 
+ *
  */
-public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements
-		IResourceChangeListener {
+public abstract class MultiPageCSVEditor extends MultiPageEditorPart implements IResourceChangeListener {
 
-	private boolean isPageModified;
-	
-	/** index of the source page */
-	public static final int indexSRC = 1;
-	/** index of the table page */
-	public static final int indexTBL = 0;
+    private boolean isPageModified;
 
-	/** The text editor used in page 0. */
-	protected TextEditor editor;
+    /** index of the source page */
+    public static final int indexSRC = 1;
+    /** index of the table page */
+    public static final int indexTBL = 0;
 
-	/** The table viewer used in page 1. */
-	protected TableViewer tableViewer;
+    /** The text editor used in page 0. */
+    protected TextEditor editor;
 
-	private CSVTableSorter tableSorter;
+    /** The table viewer used in page 1. */
+    protected TableViewer tableViewer;
 
-	private Menu tableHeaderMenu;
+    private CSVTableSorter tableSorter;
 
-	private AbstractCSVFile model;
+    private Menu tableHeaderMenu;
 
-	/**
+    private final AbstractCSVFile model;
+
+    /**
      *
      */
-	private final ICsvFileModelListener csvFileListener = new ICsvFileModelListener() {
-		public void entryChanged(CSVRow row, int rowIndex) {
-			// tableViewer.update(row, new String[] { Integer.toString(rowIndex)
-			// });
-			tableModified();
-		}
-	};
+    private final ICsvFileModelListener csvFileListener = new ICsvFileModelListener() {
+        @Override
+        public void entryChanged(final CSVRow row, final int rowIndex) {
+            // tableViewer.update(row, new String[] { Integer.toString(rowIndex)
+            // });
+            tableModified();
+        }
+    };
 
-	/**
-	 * Creates a multi-page editor example.
-	 */
-	public MultiPageCSVEditor() {
-		super();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-		model = createCSVFile();
-	}
+    /**
+     * Creates a multi-page editor example.
+     */
+    public MultiPageCSVEditor() {
+        super();
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+        model = createCSVFile();
+    }
 
-	/**
-	 * Create the CSV file object. Class that extends the MultiPageCSVEditor
-	 * <i>must</i> implement this class.
-	 * 
-	 * @return an {@link AbstractCSVFile} object which provides the contents as
-	 *         well as some formatting information such as the delimiter and
-	 *         extra meta information
-	 */
-	protected abstract AbstractCSVFile createCSVFile();
+    /**
+     * Create the CSV file object. Class that extends the MultiPageCSVEditor
+     * <i>must</i> implement this class.
+     *
+     * @return an {@link AbstractCSVFile} object which provides the contents as well
+     *         as some formatting information such as the delimiter and extra meta
+     *         information
+     */
+    protected abstract AbstractCSVFile createCSVFile();
 
-	/**
-	 * Creates the pages of the multi-page editor.
-	 * 
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()
-	 */
-	protected void createPages() {
-		try {
-			createTablePage();
-			createSourcePage();
-			updateTitle();
-			populateTablePage();
-		} catch (Exception e) {
-			System.err.println(e);
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Creates the pages of the multi-page editor.
+     *
+     * @see org.eclipse.ui.part.MultiPageEditorPart#createPages()
+     */
+    @Override
+    protected void createPages() {
+        try {
+            createTablePage();
+            createSourcePage();
+            updateTitle();
+            populateTablePage();
+        } catch (final Exception e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * Creates page 0 of the multi-page editor, which contains a text editor.
-	 */
-	private void createSourcePage() {
-		try {
-			editor = new CSVTextEditor(model.getCustomDelimiter());
-			addPage(editor, getEditorInput());
-			setPageText(indexSRC, "CSV Source");
-		} catch (PartInitException e) {
-			ErrorDialog.openError(getSite().getShell(),
-					"Error creating nested text editor", null, e.getStatus());
-		}
-	}
+    /**
+     * Creates page 0 of the multi-page editor, which contains a text editor.
+     */
+    private void createSourcePage() {
+        try {
+            editor = new CSVTextEditor(model.getCustomDelimiter());
+            addPage(editor, getEditorInput());
+            setPageText(indexSRC, "CSV Source");
+        } catch (final PartInitException e) {
+            ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
+        }
+    }
 
-	/**
+    /**
      *
      */
-	private void createTablePage() {
-		Composite parent = getContainer();
+    private void createTablePage() {
+        final Composite parent = getContainer();
 
-		// XXX move all the creation into its own component
-		Canvas canvas = new Canvas(parent, SWT.None);
+        // XXX move all the creation into its own component
+        final Canvas canvas = new Canvas(parent, SWT.None);
 
-		GridLayout layout = new GridLayout(6, false);
-		canvas.setLayout(layout);
+        final GridLayout layout = new GridLayout(6, false);
+        canvas.setLayout(layout);
 
-		// create the header part with the search function and Add/Delete rows
-		Label searchLabel = new Label(canvas, SWT.NONE);
-		searchLabel.setText("Filter: ");
-		final Text searchText = new Text(canvas, SWT.BORDER | SWT.SEARCH);
-		searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
+        // create the header part with the search function and Add/Delete rows
+        final Label searchLabel = new Label(canvas, SWT.NONE);
+        searchLabel.setText("Filter: ");
+        final Text searchText = new Text(canvas, SWT.BORDER | SWT.SEARCH);
+        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
-		// Create and configure the buttons
-		Button duplicate = new Button(canvas, SWT.PUSH | SWT.CENTER);
-		duplicate.setText("Duplicate");
-		duplicate.setToolTipText("Duplicate the current row");
-		GridData buttonDuplicateGridData = new GridData(
-				GridData.HORIZONTAL_ALIGN_BEGINNING);
-		buttonDuplicateGridData.widthHint = 80;
-		duplicate.setLayoutData(buttonDuplicateGridData);
-		duplicate.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer
-						.getSelection()).getFirstElement();
-				if (row != null) {
-					model.duplicateRow(row);
-					tableModified();
-				}
-			}
-		});
-		
-		Button insert = new Button(canvas, SWT.PUSH | SWT.CENTER);
-		insert.setText("Insert Row");
-		insert.setToolTipText("Insert a new row before the current one");
-		GridData buttonInsertGridData = new GridData(
-				GridData.HORIZONTAL_ALIGN_BEGINNING);
-		buttonInsertGridData.widthHint = 80;
-		insert.setLayoutData(buttonInsertGridData);
-		insert.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer
-						.getSelection()).getFirstElement();
-				if (row != null) {
-					model.addRowAfterElement(row);
-					tableModified();
-				}
-			}
-		});
-		/*
-		 * insert.addKeyListener(new KeyAdapter() { public void
-		 * keyPressed(KeyEvent e) { //if(((e.stateMask & SWT.CTRL) != 0) &
-		 * (e.keyCode == 'd')) { //if (e.stateMask == SWT.CTRL && e.keyCode ==
-		 * 'd') { if (e.character == SWT.DEL) { CSVRow row = (CSVRow)
-		 * ((IStructuredSelection)
-		 * tableViewer.getSelection()).getFirstElement(); if (row != null) {
-		 * model.addLineAfterElement(row); tableViewer.refresh();
-		 * tableModified(); } } } });
-		 */
+        // Create and configure the buttons
+        final Button duplicate = new Button(canvas, SWT.PUSH | SWT.CENTER);
+        duplicate.setText("Duplicate");
+        duplicate.setToolTipText("Duplicate the current row");
+        final GridData buttonDuplicateGridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+        buttonDuplicateGridData.widthHint = 80;
+        duplicate.setLayoutData(buttonDuplicateGridData);
+        duplicate.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+                if (row != null) {
+                    model.duplicateRow(row);
+                    tableModified();
+                }
+            }
+        });
 
-		Button add = new Button(canvas, SWT.PUSH | SWT.CENTER);
-		add.setText("Add Row");
-		add.setToolTipText("Add a new row at the end of the file");
-		GridData buttonAddGridData = new GridData(
-				GridData.HORIZONTAL_ALIGN_BEGINNING);
-		buttonAddGridData.widthHint = 80;
-		add.setLayoutData(buttonAddGridData);
-		add.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				model.addRow();
-				tableModified();
-			}
-		});
+        final Button insert = new Button(canvas, SWT.PUSH | SWT.CENTER);
+        insert.setText("Insert Row");
+        insert.setToolTipText("Insert a new row before the current one");
+        final GridData buttonInsertGridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+        buttonInsertGridData.widthHint = 80;
+        insert.setLayoutData(buttonInsertGridData);
+        insert.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+                if (row != null) {
+                    model.addRowAfterElement(row);
+                    tableModified();
+                }
+            }
+        });
+        /*
+         * insert.addKeyListener(new KeyAdapter() { public void keyPressed(KeyEvent e) {
+         * //if(((e.stateMask & SWT.CTRL) != 0) & (e.keyCode == 'd')) { //if
+         * (e.stateMask == SWT.CTRL && e.keyCode == 'd') { if (e.character == SWT.DEL) {
+         * CSVRow row = (CSVRow) ((IStructuredSelection)
+         * tableViewer.getSelection()).getFirstElement(); if (row != null) {
+         * model.addLineAfterElement(row); tableViewer.refresh(); tableModified(); } } }
+         * });
+         */
 
-		Button delete = new Button(canvas, SWT.PUSH | SWT.CENTER);
-		delete.setText("Delete Row");
-		delete.setToolTipText("Delete the current row");
-		GridData buttonDelGridData = new GridData(
-				GridData.HORIZONTAL_ALIGN_BEGINNING);
-		buttonDelGridData.widthHint = 80;
-		delete.setLayoutData(buttonDelGridData);
-		delete.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer
-						.getSelection()).getFirstElement();
-				
-				while(row != null){
-					row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
-					if (row != null) {
-						model.removeRow(row);
-						tableModified();
-					}
-				}
-			}
-		});
-		/*
-		 * insert.addKeyListener(new KeyAdapter() { public void
-		 * keyPressed(KeyEvent e) { if (e.stateMask == SWT.CTRL && e.keyCode ==
-		 * 'd') { CSVRow row = (CSVRow) ((IStructuredSelection)
-		 * tableViewer.getSelection()).getFirstElement(); if (row != null) {
-		 * model.removeLine(row); tableViewer.refresh(); tableModified(); } } }
-		 * });
-		 */
-		/*
-		 * 
-		 * // manage 1st line - should only be visible if global option is set
-		 * if (pref.getUseFirstLineAsHeader()) { Label encodingLineLabel = new
-		 * Label(canvas, SWT.NONE);
-		 * encodingLineLabel.setText("Display 1st line"); final Button
-		 * encodingLineBtn = new Button(canvas, SWT.CHECK);
-		 * encodingLineBtn.setLayoutData(new
-		 * GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-		 * encodingLineBtn.setSelection(true);
-		 * encodingLineBtn.addSelectionListener(new SelectionAdapter() { public
-		 * void widgetSelected(SelectionEvent e) {
-		 * model.displayFirstLine(encodingLineBtn.getSelection());
-		 * updateTableFromTextEditor(); } }); }
-		 * sensitiveBtn.addSelectionListener(new SelectionAdapter() { public
-		 * void widgetSelected(SelectionEvent e) {
-		 * tableFilter.setSearchText(searchText.getText(),
-		 * sensitiveBtn.getSelection());
-		 * labelProvider.setSearchText(searchText.getText());
-		 * tableViewer.refresh(); } });
-		 */
-		tableViewer = new TableViewer(canvas, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		tableViewer.setUseHashlookup(true);
-		final Table table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+        final Button add = new Button(canvas, SWT.PUSH | SWT.CENTER);
+        add.setText("Add Row");
+        add.setToolTipText("Add a new row at the end of the file");
+        final GridData buttonAddGridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+        buttonAddGridData.widthHint = 80;
+        add.setLayoutData(buttonAddGridData);
+        add.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                model.addRow();
+                tableModified();
+            }
+        });
 
-		// set the sorter for the table
-		tableSorter = new CSVTableSorter();
-		tableViewer.setSorter(tableSorter);
+        final Button delete = new Button(canvas, SWT.PUSH | SWT.CENTER);
+        delete.setText("Delete Row");
+        delete.setToolTipText("Delete the current row");
+        final GridData buttonDelGridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+        buttonDelGridData.widthHint = 80;
+        delete.setLayoutData(buttonDelGridData);
+        delete.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
 
-		// set a table filter
-		final CSVTableFilter tableFilter = new CSVTableFilter();
-		tableViewer.addFilter(tableFilter);
+                while (row != null) {
+                    row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+                    if (row != null) {
+                        model.removeRow(row);
+                        tableModified();
+                    }
+                }
+            }
+        });
+        /*
+         * insert.addKeyListener(new KeyAdapter() { public void keyPressed(KeyEvent e) {
+         * if (e.stateMask == SWT.CTRL && e.keyCode == 'd') { CSVRow row = (CSVRow)
+         * ((IStructuredSelection) tableViewer.getSelection()).getFirstElement(); if
+         * (row != null) { model.removeLine(row); tableViewer.refresh();
+         * tableModified(); } } } });
+         */
+        /*
+         *
+         * // manage 1st line - should only be visible if global option is set if
+         * (pref.getUseFirstLineAsHeader()) { Label encodingLineLabel = new
+         * Label(canvas, SWT.NONE); encodingLineLabel.setText("Display 1st line"); final
+         * Button encodingLineBtn = new Button(canvas, SWT.CHECK);
+         * encodingLineBtn.setLayoutData(new
+         * GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+         * encodingLineBtn.setSelection(true); encodingLineBtn.addSelectionListener(new
+         * SelectionAdapter() { public void widgetSelected(SelectionEvent e) {
+         * model.displayFirstLine(encodingLineBtn.getSelection());
+         * updateTableFromTextEditor(); } }); } sensitiveBtn.addSelectionListener(new
+         * SelectionAdapter() { public void widgetSelected(SelectionEvent e) {
+         * tableFilter.setSearchText(searchText.getText(), sensitiveBtn.getSelection());
+         * labelProvider.setSearchText(searchText.getText()); tableViewer.refresh(); }
+         * });
+         */
+        tableViewer = new TableViewer(canvas, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        tableViewer.setUseHashlookup(true);
+        final Table table = tableViewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
-		// add the filtering and coloring when searching specific elements.
-		searchText.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent ke) {
-				tableFilter.setSearchText(searchText.getText(),
-						model.getSensitiveSearch());
-				String filterText = searchText.getText();
-				for (int i = 0; i < tableViewer.getColumnProperties().length; i++) {
-					CellLabelProvider labelProvider = tableViewer
-							.getLabelProvider(i);
-					if(labelProvider != null){
-						((CSVLabelProvider) labelProvider)
-							.setSearchText(filterText);
-					}
-				}
-				tableViewer.refresh();
-			}
-		});
+        // set the sorter for the table
+        tableSorter = new CSVTableSorter();
+        tableViewer.setComparator(tableSorter);
 
-		/*
-		 * // create a TableCursor to navigate around the table final
-		 * TableCursor cursor = new TableCursor(table, SWT.NONE); // create an
-		 * editor to edit the cell when the user hits "ENTER" // while over a
-		 * cell in the table final ControlEditor editor = new
-		 * ControlEditor(cursor); editor.grabHorizontal = true;
-		 * editor.grabVertical = true;
-		 * 
-		 * cursor.addSelectionListener(new SelectionAdapter() { // This is
-		 * called as the user navigates around the table public void
-		 * widgetSelected(SelectionEvent e) { // Select the row in the table
-		 * where the TableCursor is table.setSelection(new TableItem[]
-		 * {cursor.getRow()}); }
-		 * 
-		 * // when the user hits "ENTER" in the TableCursor, // pop up a text
-		 * editor so that user can change the text of the cell public void
-		 * widgetDefaultSelected(SelectionEvent e) { // Begin an editing session
-		 * final Text text = new Text(cursor, SWT.NONE);
-		 * 
-		 * // Copy the text from the cell to the Text int column =
-		 * cursor.getColumn(); text.setText(cursor.getRow().getText(column));
-		 * 
-		 * // Add a handler to detect key presses text.addKeyListener(new
-		 * KeyAdapter() { public void keyPressed(KeyEvent e) { // tab will save
-		 * & move to the next column if (e.character == SWT.TAB) { TableItem row
-		 * = cursor.getRow(); int column = cursor.getColumn();
-		 * row.setText(column, text.getText()); text.dispose();
-		 * cursor.setSelection(row, column+1); tableModified(); } // close the
-		 * text editor and copy the data over // when the user hits "ENTER" if
-		 * (e.character == SWT.CR) { TableItem row = cursor.getRow();
-		 * row.setText(cursor.getColumn(), text.getText()); tableModified();
-		 * text.dispose(); } // close the text editor when the user hits "ESC"
-		 * if (e.character == SWT.ESC) { text.dispose(); } } }); // close the
-		 * text editor when the user tabs away text.addFocusListener(new
-		 * FocusAdapter() { public void focusLost(FocusEvent e) {
-		 * text.dispose(); } }); editor.setEditor(text); text.setFocus(); } });
-		 * 
-		 * /* // Hide the TableCursor when the user hits the "CTRL" or "SHIFT"
-		 * key. // This allows the user to select multiple items in the table.
-		 * cursor.addKeyListener(new KeyAdapter() { public void
-		 * keyPressed(KeyEvent e) {
-		 * 
-		 * // delete line if (e.character == SWT.DEL) { TableItem row =
-		 * cursor.getRow(); tableModified(); row.dispose();
-		 * //table.showItem(row); //cursor.setSelection(row, 0); }
-		 * 
-		 * // insert line if (e.character == (char) SWT.F8) { TableItem row =
-		 * cursor.getRow(); row.dispose(); }
-		 * 
-		 * // add line
-		 * 
-		 * cursor.setVisible(true); cursor.setFocus();
-		 * 
-		 * if (e.keyCode == SWT.CTRL || e.keyCode == SWT.SHIFT || (e.stateMask &
-		 * SWT.CONTROL) != 0 || (e.stateMask & SWT.SHIFT) != 0) {
-		 * cursor.setVisible(false); return; } } });
-		 * 
-		 * // When the user double clicks in the TableCursor, pop up a text
-		 * editor so that // they can change the text of the cell.
-		 * cursor.addMouseListener(new MouseAdapter() { public void
-		 * mouseDown(MouseEvent e) { final Text text = new Text(cursor,
-		 * SWT.NONE); TableItem row = cursor.getRow(); int column =
-		 * cursor.getColumn(); text.setText(row.getText(column));
-		 * text.addKeyListener(new KeyAdapter() { public void
-		 * keyPressed(KeyEvent e) { // close the text editor and copy the data
-		 * over // when the user hits "ENTER" if (e.character == SWT.CR) {
-		 * TableItem row = cursor.getRow(); int column = cursor.getColumn();
-		 * row.setText(column, text.getText()); tableModified(); text.dispose();
-		 * } // close the text editor when the user hits "ESC" if (e.character
-		 * == SWT.ESC) { text.dispose(); } } }); // close the text editor when
-		 * the user clicks away text.addFocusListener(new FocusAdapter() {
-		 * public void focusLost(FocusEvent e) { text.dispose(); } });
-		 * editor.setEditor(text); text.setFocus(); } });
-		 * 
-		 * // Show the TableCursor when the user releases the "SHIFT" or "CTRL"
-		 * key. // This signals the end of the multiple selection task.
-		 * table.addKeyListener(new KeyAdapter() { public void
-		 * keyReleased(KeyEvent e) {
-		 * 
-		 * if (e.keyCode == SWT.CONTROL && (e.stateMask & SWT.SHIFT) != 0)
-		 * return; if (e.keyCode == SWT.SHIFT && (e.stateMask & SWT.CONTROL) !=
-		 * 0) return; if (e.keyCode != SWT.CONTROL && (e.stateMask &
-		 * SWT.CONTROL) != 0) return; if (e.keyCode != SWT.SHIFT && (e.stateMask
-		 * & SWT.SHIFT) != 0) return;
-		 * 
-		 * TableItem[] selection = table.getSelection(); TableItem row =
-		 * (selection.length == 0) ? table.getItem(table.getTopIndex()) :
-		 * selection[0]; table.showItem(row); cursor.setSelection(row, 0);
-		 * cursor.setVisible(true); cursor.setFocus(); } });
-		 */
+        // set a table filter
+        final CSVTableFilter tableFilter = new CSVTableFilter();
+        tableViewer.addFilter(tableFilter);
 
-/*		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-			
-			public void doubleClick(DoubleClickEvent event) {
-				
-				CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
-				DetailedView input = new DetailedView(Display.getDefault(), model.getHeader(), row);
+        // add the filtering and coloring when searching specific elements.
+        searchText.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(final KeyEvent ke) {
+                tableFilter.setSearchText(searchText.getText(), model.getSensitiveSearch());
+                final String filterText = searchText.getText();
+                for (int i = 0; i < tableViewer.getColumnProperties().length; i++) {
+                    final CellLabelProvider labelProvider = tableViewer.getLabelProvider(i);
+                    if (labelProvider != null) {
+                        ((CSVLabelProvider) labelProvider).setSearchText(filterText);
+                    }
+                }
+                tableViewer.refresh();
+            }
+        });
 
-				input.open();
-				
-			}
-		});*/
+        /*
+         * // create a TableCursor to navigate around the table final TableCursor cursor
+         * = new TableCursor(table, SWT.NONE); // create an editor to edit the cell when
+         * the user hits "ENTER" // while over a cell in the table final ControlEditor
+         * editor = new ControlEditor(cursor); editor.grabHorizontal = true;
+         * editor.grabVertical = true;
+         *
+         * cursor.addSelectionListener(new SelectionAdapter() { // This is called as the
+         * user navigates around the table public void widgetSelected(SelectionEvent e)
+         * { // Select the row in the table where the TableCursor is
+         * table.setSelection(new TableItem[] {cursor.getRow()}); }
+         *
+         * // when the user hits "ENTER" in the TableCursor, // pop up a text editor so
+         * that user can change the text of the cell public void
+         * widgetDefaultSelected(SelectionEvent e) { // Begin an editing session final
+         * Text text = new Text(cursor, SWT.NONE);
+         *
+         * // Copy the text from the cell to the Text int column = cursor.getColumn();
+         * text.setText(cursor.getRow().getText(column));
+         *
+         * // Add a handler to detect key presses text.addKeyListener(new KeyAdapter() {
+         * public void keyPressed(KeyEvent e) { // tab will save & move to the next
+         * column if (e.character == SWT.TAB) { TableItem row = cursor.getRow(); int
+         * column = cursor.getColumn(); row.setText(column, text.getText());
+         * text.dispose(); cursor.setSelection(row, column+1); tableModified(); } //
+         * close the text editor and copy the data over // when the user hits "ENTER" if
+         * (e.character == SWT.CR) { TableItem row = cursor.getRow();
+         * row.setText(cursor.getColumn(), text.getText()); tableModified();
+         * text.dispose(); } // close the text editor when the user hits "ESC" if
+         * (e.character == SWT.ESC) { text.dispose(); } } }); // close the text editor
+         * when the user tabs away text.addFocusListener(new FocusAdapter() { public
+         * void focusLost(FocusEvent e) { text.dispose(); } }); editor.setEditor(text);
+         * text.setFocus(); } });
+         *
+         * /* // Hide the TableCursor when the user hits the "CTRL" or "SHIFT" key. //
+         * This allows the user to select multiple items in the table.
+         * cursor.addKeyListener(new KeyAdapter() { public void keyPressed(KeyEvent e) {
+         *
+         * // delete line if (e.character == SWT.DEL) { TableItem row = cursor.getRow();
+         * tableModified(); row.dispose(); //table.showItem(row);
+         * //cursor.setSelection(row, 0); }
+         *
+         * // insert line if (e.character == (char) SWT.F8) { TableItem row =
+         * cursor.getRow(); row.dispose(); }
+         *
+         * // add line
+         *
+         * cursor.setVisible(true); cursor.setFocus();
+         *
+         * if (e.keyCode == SWT.CTRL || e.keyCode == SWT.SHIFT || (e.stateMask &
+         * SWT.CONTROL) != 0 || (e.stateMask & SWT.SHIFT) != 0) {
+         * cursor.setVisible(false); return; } } });
+         *
+         * // When the user double clicks in the TableCursor, pop up a text editor so
+         * that // they can change the text of the cell. cursor.addMouseListener(new
+         * MouseAdapter() { public void mouseDown(MouseEvent e) { final Text text = new
+         * Text(cursor, SWT.NONE); TableItem row = cursor.getRow(); int column =
+         * cursor.getColumn(); text.setText(row.getText(column));
+         * text.addKeyListener(new KeyAdapter() { public void keyPressed(KeyEvent e) {
+         * // close the text editor and copy the data over // when the user hits "ENTER"
+         * if (e.character == SWT.CR) { TableItem row = cursor.getRow(); int column =
+         * cursor.getColumn(); row.setText(column, text.getText()); tableModified();
+         * text.dispose(); } // close the text editor when the user hits "ESC" if
+         * (e.character == SWT.ESC) { text.dispose(); } } }); // close the text editor
+         * when the user clicks away text.addFocusListener(new FocusAdapter() { public
+         * void focusLost(FocusEvent e) { text.dispose(); } }); editor.setEditor(text);
+         * text.setFocus(); } });
+         *
+         * // Show the TableCursor when the user releases the "SHIFT" or "CTRL" key. //
+         * This signals the end of the multiple selection task. table.addKeyListener(new
+         * KeyAdapter() { public void keyReleased(KeyEvent e) {
+         *
+         * if (e.keyCode == SWT.CONTROL && (e.stateMask & SWT.SHIFT) != 0) return; if
+         * (e.keyCode == SWT.SHIFT && (e.stateMask & SWT.CONTROL) != 0) return; if
+         * (e.keyCode != SWT.CONTROL && (e.stateMask & SWT.CONTROL) != 0) return; if
+         * (e.keyCode != SWT.SHIFT && (e.stateMask & SWT.SHIFT) != 0) return;
+         *
+         * TableItem[] selection = table.getSelection(); TableItem row =
+         * (selection.length == 0) ? table.getItem(table.getTopIndex()) : selection[0];
+         * table.showItem(row); cursor.setSelection(row, 0); cursor.setVisible(true);
+         * cursor.setFocus(); } });
+         */
 
-		// Layout the viewer
-		GridData gridData = new GridData();
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.horizontalSpan = 6;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalAlignment = GridData.FILL;
-		tableViewer.getControl().setLayoutData(gridData);
+        /*
+         * tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+         *
+         * public void doubleClick(DoubleClickEvent event) {
+         *
+         * CSVRow row = (CSVRow) ((IStructuredSelection)
+         * tableViewer.getSelection()).getFirstElement(); DetailedView input = new
+         * DetailedView(Display.getDefault(), model.getHeader(), row);
+         *
+         * input.open();
+         *
+         * } });
+         */
 
-		addPage(canvas);
-		setPageText(indexTBL, "CSV Table");
-	}
+        // Layout the viewer
+        final GridData gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 6;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        tableViewer.getControl().setLayoutData(gridData);
 
-	/**
-	 * Set Name of the file to the tab
-	 */
-	private void updateTitle() {
-		IEditorInput input = getEditorInput();
-		setPartName(input.getName());
-		setTitleToolTip(input.getToolTipText());
-	}
+        addPage(canvas);
+        setPageText(indexTBL, "CSV Table");
+    }
 
-	/**
-	 * @throws Exception
-	 */
-	private void populateTablePage() throws Exception {
-		tableViewer.setContentProvider(new CSVContentProvider());
+    /**
+     * Set Name of the file to the tab
+     */
+    private void updateTitle() {
+        final IEditorInput input = getEditorInput();
+        setPartName(input.getName());
+        setTitleToolTip(input.getToolTipText());
+    }
 
-		// make the selection available
-		getSite().setSelectionProvider(tableViewer);
+    /**
+     * @throws Exception
+     */
+    private void populateTablePage() throws Exception {
+        tableViewer.setContentProvider(new CSVContentProvider());
 
-		tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				updateTableFromTextEditor();
-			}
-		});
-	}
+        // make the selection available
+        getSite().setSelectionProvider(tableViewer);
 
-	/**
+        tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                updateTableFromTextEditor();
+            }
+        });
+    }
+
+    /**
      *
      */
-	public void tableModified() {
-		tableViewer.refresh();
-		boolean wasPageModified = isPageModified;
-		isPageModified = true;
-		if (!wasPageModified) {
-			firePropertyChange(IEditorPart.PROP_DIRTY);
-			editor.validateEditorInputState(); // will invoke:
-												// FileModificationValidator.validateEdit()
-												// (expected by some repository
-												// providers)
-		}
-	}
+    public void tableModified() {
+        tableViewer.refresh();
+        final boolean wasPageModified = isPageModified;
+        isPageModified = true;
+        if (!wasPageModified) {
+            firePropertyChange(IEditorPart.PROP_DIRTY);
+            editor.validateEditorInputState(); // will invoke:
+                                               // FileModificationValidator.validateEdit()
+                                               // (expected by some repository
+                                               // providers)
+        }
+    }
 
-	/**
+    /**
      *
      */
-	private void updateTableFromTextEditor() {
-		
-		tableHeaderMenu = new Menu(tableViewer.getTable());
-		
-		// PropertyFile propertyFile = (PropertyFile) treeViewer.getInput();
-		model.removeModelListener(csvFileListener);
+    private void updateTableFromTextEditor() {
 
-		model.setInput(editor.getDocumentProvider()
-				.getDocument(editor.getEditorInput()).get());
+        tableHeaderMenu = new Menu(tableViewer.getTable());
 
-		final MenuItem detailedEditItem = new MenuItem(tableHeaderMenu,
-				SWT.PUSH, 0);
-		detailedEditItem.setText("Edit");
-		detailedEditItem.setSelection(false);
-		detailedEditItem.addListener(SWT.Selection, new Listener() {
-			
-			public void handleEvent(Event event) {
-				
-				CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
-				
-				if(row != null){
-					DetailedEditor input = new DetailedEditor(Display.getDefault(), model.getHeader(), 
-							row, model.getInCellDelimiter(), model.getRegexTableMarker());
-					input.open();
-				}
-			}
-		});
-		
-		new MenuItem(tableHeaderMenu, SWT.SEPARATOR, 1);
+        // PropertyFile propertyFile = (PropertyFile) treeViewer.getInput();
+        model.removeModelListener(csvFileListener);
 
-		TableColumn[] columns = tableViewer.getTable().getColumns();
-		if (columns.length > 0) { // if table header columns already created
-			// update column header text
-			for (int i = 0; i < model.getHeader().size(); i++){
-				if(i < columns.length){
-					columns[i].setText(model.getHeader().get(i));
-					final int index = i;
-					addMenuItemToColumn(columns[i], index+2);
-				}
-			}
-		} else {
-			// create columns
-			for (int i = 0; i < model.getHeader().size(); i++) {
-				final TableViewerColumn column = new TableViewerColumn(
-						tableViewer, SWT.LEFT);
-				final int index = i;
-				column.getColumn().setText(model.getHeader().get(i));
-				column.getColumn().setWidth(100);
-				column.getColumn().setResizable(true);
-				column.getColumn().setMoveable(true);
-				column.setLabelProvider(new CSVLabelProvider());
-				//+2 because the first two items are Edit and a separator
-				addMenuItemToColumn(column.getColumn(), index+2);
-			}
-		}
+        model.setInput(editor.getDocumentProvider().getDocument(editor.getEditorInput()).get());
 
-		if (model.isFirstLineHeader()) {
-			new MenuItem(tableHeaderMenu, SWT.SEPARATOR);
+        final MenuItem detailedEditItem = new MenuItem(tableHeaderMenu, SWT.PUSH, 0);
+        detailedEditItem.setText("Edit");
+        detailedEditItem.setSelection(false);
+        detailedEditItem.addListener(SWT.Selection, new Listener() {
 
-			// create menu item to delete column
-			final MenuItem deleteColumnItem = new MenuItem(tableHeaderMenu,
-					SWT.PUSH);
-			deleteColumnItem.setText("Delete Column");
-			deleteColumnItem.setSelection(false);
-			deleteColumnItem.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					// call delete column page
-					DeleteColumnPage dcPage = new DeleteColumnPage(getSite()
-							.getShell(), model.getArrayHeader());
-					if (dcPage.open() == InputDialog.OK) {
-						String[] colToDelete = dcPage.getColumnSelected();
-						for (String column : colToDelete) {
-							int colIndex = findColumnForName(column);
-							tableViewer.getTable().getColumn(colIndex)
-									.dispose();
-							//+2 because the first two items are Edit and a separator
-							tableHeaderMenu.getItem(colIndex+2).dispose();
-							model.removeColumn(column);
-						}
-						tableModified();
-					}
-				}
-			});
+            @Override
+            public void handleEvent(final Event event) {
 
-			// create menu item to insert column
-			final MenuItem insertColumnItem = new MenuItem(tableHeaderMenu,
-					SWT.PUSH);
-			insertColumnItem.setText("Add Column");
-			insertColumnItem.setSelection(false);
-			insertColumnItem.addListener(SWT.Selection, new Listener() {
-				public void handleEvent(Event event) {
-					// call insert/add column page
-					InsertColumnPage acPage = new InsertColumnPage(getSite()
-							.getShell(), model.getArrayHeader());
-					if (acPage.open() == InputDialog.OK) {
-						String colToInsert = acPage.getColumnNewName();
-						model.addColumn(colToInsert);
+                final CSVRow row = (CSVRow) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
 
-						tableViewer.setInput(model);
-						final TableColumn column = new TableColumn(tableViewer
-								.getTable(), SWT.LEFT);
-						column.setText(colToInsert);
-						column.setWidth(100);
-						column.setResizable(true);
-						column.setMoveable(true);
+                if (row != null) {
+                    final DetailedEditor input = new DetailedEditor(Display.getDefault(), model.getHeader(), row, model.getInCellDelimiter(),
+                            model.getRegexTableMarker());
+                    input.open();
+                }
+            }
+        });
 
-						addMenuItemToColumn(column, model.getColumnCount() - 1);
-						defineCellEditing();
+        new MenuItem(tableHeaderMenu, SWT.SEPARATOR, 1);
 
-						tableModified();
-					}
-				}
-			});
-		}
+        final TableColumn[] columns = tableViewer.getTable().getColumns();
+        if (columns.length > 0) { // if table header columns already created
+            // update column header text
+            for (int i = 0; i < model.getHeader().size(); i++) {
+                if (i < columns.length) {
+                    columns[i].setText(model.getHeader().get(i));
+                    addMenuItemToColumn(columns[i], i);
+                }
+            }
+        } else {
+            // create columns
+            for (int i = 0; i < model.getHeader().size(); i++) {
+                final TableViewerColumn column = new TableViewerColumn(tableViewer, SWT.LEFT);
+                final int index = i;
+                column.getColumn().setText(model.getHeader().get(i));
+                column.getColumn().setWidth(100);
+                column.getColumn().setResizable(true);
+                column.getColumn().setMoveable(true);
+                column.setLabelProvider(new CSVLabelProvider());
+                addMenuItemToColumn(column.getColumn(), index);
+            }
+        }
 
-		tableViewer.setInput(model);
-		model.addModelListener(csvFileListener);
+        if (model.isFirstLineHeader()) {
+            new MenuItem(tableHeaderMenu, SWT.SEPARATOR);
 
-		tableViewer.getTable().addListener(SWT.MenuDetect, new Listener() {
-			public void handleEvent(Event event) {
-				tableViewer.getTable().setMenu(tableHeaderMenu);
-			}
-		});
+            // create menu item to delete column
+            final MenuItem deleteColumnItem = new MenuItem(tableHeaderMenu, SWT.PUSH);
+            deleteColumnItem.setText("Delete Column");
+            deleteColumnItem.setSelection(false);
+            deleteColumnItem.addListener(SWT.Selection, new Listener() {
+                @Override
+                public void handleEvent(final Event event) {
+                    // call delete column page
+                    final DeleteColumnPage dcPage = new DeleteColumnPage(getSite().getShell(), model.getArrayHeader());
+                    if (dcPage.open() == InputDialog.OK) {
+                        final String[] colToDelete = dcPage.getColumnSelected();
+                        for (final String column : colToDelete) {
+                            final int colIndex = findColumnForName(column);
+                            tableViewer.getTable().getColumn(colIndex).dispose();
+                            // +2 because the first two items are Edit and a separator
+                            tableHeaderMenu.getItem(colIndex + 2).dispose();
+                            model.removeColumn(column);
+                        }
+                        tableModified();
+                    }
+                }
+            });
 
-		defineCellEditing();
-	}
+            // create menu item to insert column
+            final MenuItem insertColumnItem = new MenuItem(tableHeaderMenu, SWT.PUSH);
+            insertColumnItem.setText("Add Column");
+            insertColumnItem.setSelection(false);
+            insertColumnItem.addListener(SWT.Selection, new Listener() {
+                @Override
+                public void handleEvent(final Event event) {
+                    // call insert/add column page
+                    final InsertColumnPage acPage = new InsertColumnPage(getSite().getShell(), model.getArrayHeader());
+                    if (acPage.open() == InputDialog.OK) {
+                        final String colToInsert = acPage.getColumnNewName();
+                        model.addColumn(colToInsert);
 
-	/**
+                        tableViewer.setInput(model);
+                        final TableColumn column = new TableColumn(tableViewer.getTable(), SWT.LEFT);
+                        column.setText(colToInsert);
+                        column.setWidth(100);
+                        column.setResizable(true);
+                        column.setMoveable(true);
+
+                        addMenuItemToColumn(column, model.getColumnCount() - 1);
+                        defineCellEditing();
+
+                        tableModified();
+                    }
+                }
+            });
+        }
+
+        tableViewer.setInput(model);
+        model.addModelListener(csvFileListener);
+
+        tableViewer.getTable().addListener(SWT.MenuDetect, new Listener() {
+            @Override
+            public void handleEvent(final Event event) {
+                tableViewer.getTable().setMenu(tableHeaderMenu);
+            }
+        });
+
+        defineCellEditing();
+    }
+
+    /**
      *
      */
-	private void defineCellEditing() {
-		String[] columnProperties = new String[model.getColumnCount()];
-		CellEditor[] cellEditors = new CellEditor[model.getColumnCount()];
+    private void defineCellEditing() {
+        final String[] columnProperties = new String[model.getColumnCount()];
+        final CellEditor[] cellEditors = new CellEditor[model.getColumnCount()];
 
-		for (int i = 0; i < model.getColumnCount(); i++) {
-			columnProperties[i] = Integer.toString(i);
-			cellEditors[i] = new TextCellEditor(tableViewer.getTable());
-		}
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            columnProperties[i] = Integer.toString(i);
+            cellEditors[i] = new TextCellEditor(tableViewer.getTable());
+        }
 
-		tableViewer.setColumnProperties(columnProperties);
+        tableViewer.setColumnProperties(columnProperties);
 
-		// XXX can be replaced by tableViewer.setEditingSupport()
-		tableViewer.setCellEditors(cellEditors);
-		tableViewer.setCellModifier(new CSVEditorCellModifier());
+        // XXX can be replaced by tableViewer.setEditingSupport()
+        tableViewer.setCellEditors(cellEditors);
+        tableViewer.setCellModifier(new CSVEditorCellModifier());
 
-	}
+    }
 
-	/**
-	 * Find a column in the Table by its name
-	 * 
-	 * @param columnName
-	 * @return the index of the Column indicated by its name
-	 */
-	private int findColumnForName(String columnName) {
-		int index = -1;
-		TableColumn[] tableColumns = tableViewer.getTable().getColumns();
-		for (int i = 0; i < tableColumns.length; i++) {
-			TableColumn column = tableColumns[i];
-			if (columnName.equalsIgnoreCase(column.getText()))
-				return i;
-		}
-		return index;
-	}
+    /**
+     * Find a column in the Table by its name
+     *
+     * @param columnName
+     * @return the index of the Column indicated by its name
+     */
+    private int findColumnForName(final String columnName) {
+        final int index = -1;
+        final TableColumn[] tableColumns = tableViewer.getTable().getColumns();
+        for (int i = 0; i < tableColumns.length; i++) {
+            final TableColumn column = tableColumns[i];
+            if (columnName.equalsIgnoreCase(column.getText())) {
+                return i;
+            }
+        }
+        return index;
+    }
 
-	/**
-	 * @param column
-	 * @param index
-	 */
-	private void addMenuItemToColumn(final TableColumn column, final int index) {
-				
-		// create menu item
-		final MenuItem itemName = new MenuItem(tableHeaderMenu, SWT.CHECK,
-				index);
-		itemName.setText(column.getText());
-		itemName.setSelection(column.getResizable());
-		itemName.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event event) {
-				if (itemName.getSelection()) {
-					column.setWidth(100);
-					column.setResizable(true);
-				} else {
-					column.setWidth(0);
-					column.setResizable(false);
-				}
-			}
-		});
+    /**
+     * @param column
+     * @param index
+     */
+    private void addMenuItemToColumn(final TableColumn column, final int index) {
 
-		// Setting the right sorter
-		column.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int dir = tableViewer.getTable().getSortDirection();
-				switch (dir) {
-				case SWT.UP:
-					dir = SWT.DOWN;
-					break;
-				case SWT.DOWN:
-					dir = SWT.NONE;
-					break;
-				case SWT.NONE:
-					dir = SWT.UP;
-					break;
-				}
-				tableSorter.setColumn(index, dir);
-				tableViewer.getTable().setSortDirection(dir);
-				if (dir == SWT.NONE) {
-					tableViewer.getTable().setSortColumn(null);
-				} else {
-					tableViewer.getTable().setSortColumn(column);
-				}
-				tableViewer.refresh();
-			}
-		});
+        // create menu item
+        final MenuItem itemName = new MenuItem(tableHeaderMenu, SWT.CHECK, index);
+        itemName.setText(column.getText());
+        itemName.setSelection(column.getResizable());
+        itemName.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(final Event event) {
+                if (itemName.getSelection()) {
+                    column.setWidth(100);
+                    column.setResizable(true);
+                } else {
+                    column.setWidth(0);
+                    column.setResizable(false);
+                }
+            }
+        });
 
-	}
+        // Setting the right sorter
+        column.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                int dir = tableViewer.getTable().getSortDirection();
+                switch (dir) {
+                case SWT.UP:
+                    dir = SWT.DOWN;
+                    break;
+                case SWT.DOWN:
+                    dir = SWT.NONE;
+                    break;
+                case SWT.NONE:
+                    dir = SWT.UP;
+                    break;
+                }
+                tableSorter.setColumn(index, dir);
+                tableViewer.getTable().setSortDirection(dir);
+                if (dir == SWT.NONE) {
+                    tableViewer.getTable().setSortColumn(null);
+                } else {
+                    tableViewer.getTable().setSortColumn(column);
+                }
+                tableViewer.refresh();
+            }
+        });
 
-	/**
-	 * The <code>MultiPageEditorPart</code> implementation of this
-	 * <code>IWorkbenchPart</code> method disposes all nested editors. This
-	 * method is automatically called when the editor is closed and marks the
-	 * end of the editor's life cycle. It cleans up any platform resources, such
-	 * as images, clipboard, and so on, which were created by this class.
-	 * 
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#dispose()
-	 */
-	public void dispose() {
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-		super.dispose();
-	}
+    }
 
-	/**
-	 * Saves the multi-page editor's document. If the save is successful, the
-	 * part should fire a property changed event (PROP_DIRTY property),
-	 * reflecting the new dirty state. If the save is canceled via user action,
-	 * or for any other reason, the part should invoke setCanceled on the
-	 * IProgressMonitor to inform the caller
-	 * 
-	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public void doSave(IProgressMonitor monitor) {
-		if (getActivePage() == indexTBL && isPageModified) {
-			updateTextEditorFromTable();
-		} else {
-			updateTableFromTextEditor();
-		}
+    /**
+     * The <code>MultiPageEditorPart</code> implementation of this
+     * <code>IWorkbenchPart</code> method disposes all nested editors. This method
+     * is automatically called when the editor is closed and marks the end of the
+     * editor's life cycle. It cleans up any platform resources, such as images,
+     * clipboard, and so on, which were created by this class.
+     *
+     * @see org.eclipse.ui.part.MultiPageEditorPart#dispose()
+     */
+    @Override
+    public void dispose() {
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+        super.dispose();
+    }
 
-		isPageModified = false;
-		editor.doSave(monitor);
-	}
+    /**
+     * Saves the multi-page editor's document. If the save is successful, the part
+     * should fire a property changed event (PROP_DIRTY property), reflecting the
+     * new dirty state. If the save is canceled via user action, or for any other
+     * reason, the part should invoke setCanceled on the IProgressMonitor to inform
+     * the caller
+     *
+     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    @Override
+    public void doSave(final IProgressMonitor monitor) {
+        if (getActivePage() == indexTBL && isPageModified) {
+            updateTextEditorFromTable();
+        } else {
+            updateTableFromTextEditor();
+        }
 
-	/**
-	 * Returns whether the "Save As" operation is supported by this part.
-	 * 
-	 * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
-	 */
-	public boolean isSaveAsAllowed() {
-		return true;
-	}
+        isPageModified = false;
+        editor.doSave(monitor);
+    }
 
-	/**
-	 * Saves the multi-page editor's document as another file. Also updates the
-	 * text for page 0's tab, and updates this multi-page editor's input to
-	 * correspond to the nested editor's.
-	 * 
-	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
-	 */
-	public void doSaveAs() {
-		if (getActivePage() == indexTBL && isPageModified) {
-			updateTextEditorFromTable();
-		} else {
-			updateTableFromTextEditor();
-		}
+    /**
+     * Returns whether the "Save As" operation is supported by this part.
+     *
+     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
+     */
+    @Override
+    public boolean isSaveAsAllowed() {
+        return true;
+    }
 
-		isPageModified = false;
+    /**
+     * Saves the multi-page editor's document as another file. Also updates the text
+     * for page 0's tab, and updates this multi-page editor's input to correspond to
+     * the nested editor's.
+     *
+     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
+     */
+    @Override
+    public void doSaveAs() {
+        if (getActivePage() == indexTBL && isPageModified) {
+            updateTextEditorFromTable();
+        } else {
+            updateTableFromTextEditor();
+        }
 
-		editor.doSaveAs();
-		setInput(editor.getEditorInput());
-		updateTitle();
-	}
+        isPageModified = false;
 
-	/**
-	 * Initializes this editor with the given editor site and input. This method
-	 * is automatically called shortly after editor construction; it marks the
-	 * start of the editor's lifecycle.
-	 * 
-	 * The <code>MultiPageEditorExample</code> implementation of this method
-	 * checks that the input is an instance of <code>IFileEditorInput</code>.
-	 * 
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#init(org.eclipse.ui.IEditorSite,
-	 *      org.eclipse.ui.IEditorInput)
-	 */
-	public void init(IEditorSite site, IEditorInput editorInput)
-			throws PartInitException {
-		/*
-		 * String message = "Input is " + editorInput + " of instance " +
-		 * editorInput.getClass().getName(); IStatus status = new
-		 * Status(IStatus.ERROR, "csvedit", IStatus.ERROR, message, null);
-		 * Activator.getDefault().getLog().log(status);
-		 */
+        editor.doSaveAs();
+        setInput(editor.getEditorInput());
+        updateTitle();
+    }
 
-		/*
-		 * if (!(editorInput instanceof IFileEditorInput)) throw new
-		 * PartInitException("Invalid Input: Must be IFileEditorInput");
-		 */
-		super.init(site, editorInput);
-	}
+    /**
+     * Initializes this editor with the given editor site and input. This method is
+     * automatically called shortly after editor construction; it marks the start of
+     * the editor's lifecycle.
+     *
+     * The <code>MultiPageEditorExample</code> implementation of this method checks
+     * that the input is an instance of <code>IFileEditorInput</code>.
+     *
+     * @see org.eclipse.ui.part.MultiPageEditorPart#init(org.eclipse.ui.IEditorSite,
+     *      org.eclipse.ui.IEditorInput)
+     */
+    @Override
+    public void init(final IEditorSite site, final IEditorInput editorInput) throws PartInitException {
+        /*
+         * String message = "Input is " + editorInput + " of instance " +
+         * editorInput.getClass().getName(); IStatus status = new Status(IStatus.ERROR,
+         * "csvedit", IStatus.ERROR, message, null);
+         * Activator.getDefault().getLog().log(status);
+         */
 
-	/**
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#handlePropertyChange(int)
-	 */
-	protected void handlePropertyChange(int propertyId) {
-		if (propertyId == IEditorPart.PROP_DIRTY)
-			isPageModified = isDirty();
-		super.handlePropertyChange(propertyId);
-	}
+        /*
+         * if (!(editorInput instanceof IFileEditorInput)) throw new
+         * PartInitException("Invalid Input: Must be IFileEditorInput");
+         */
+        super.init(site, editorInput);
+    }
 
-	/**
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#isDirty()
-	 */
-	public boolean isDirty() {
-		return isPageModified || super.isDirty();
-	}
+    /**
+     * @see org.eclipse.ui.part.MultiPageEditorPart#handlePropertyChange(int)
+     */
+    @Override
+    protected void handlePropertyChange(final int propertyId) {
+        if (propertyId == IEditorPart.PROP_DIRTY) {
+            isPageModified = isDirty();
+        }
+        super.handlePropertyChange(propertyId);
+    }
 
-	/**
-	 * Calculates the contents of page 2 when the it is activated.
-	 * 
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#pageChange(int)
-	 */
-	protected void pageChange(int newPageIndex) {
-		switch (newPageIndex) {
-		case indexSRC:
-			if (isDirty())
-				updateTextEditorFromTable();
-			break;
-		case indexTBL:
-			if (isDirty())
-				updateTableFromTextEditor();
-			break;
-		}
-		isPageModified = false;
-		super.pageChange(newPageIndex);
-	}
+    /**
+     * @see org.eclipse.ui.part.MultiPageEditorPart#isDirty()
+     */
+    @Override
+    public boolean isDirty() {
+        return isPageModified || super.isDirty();
+    }
 
-	/**
+    /**
+     * Calculates the contents of page 2 when the it is activated.
+     *
+     * @see org.eclipse.ui.part.MultiPageEditorPart#pageChange(int)
+     */
+    @Override
+    protected void pageChange(final int newPageIndex) {
+        switch (newPageIndex) {
+        case indexSRC:
+            if (isDirty()) {
+                updateTextEditorFromTable();
+            }
+            break;
+        case indexTBL:
+            if (isDirty()) {
+                updateTableFromTextEditor();
+            }
+            break;
+        }
+        isPageModified = false;
+        super.pageChange(newPageIndex);
+    }
+
+    /**
      *
      */
-	private void updateTextEditorFromTable() {
-		editor.getDocumentProvider()
-				.getDocument(editor.getEditorInput())
-				.set(((AbstractCSVFile) tableViewer.getInput())
-						.getTextRepresentation());
-	}
+    private void updateTextEditorFromTable() {
+        editor.getDocumentProvider().getDocument(editor.getEditorInput()).set(((AbstractCSVFile) tableViewer.getInput()).getTextRepresentation());
+    }
 
-	/**
-	 * When the focus shifts to the editor, this method is called; it must then
-	 * redirect focus to the appropriate editor based on which page is currently
-	 * selected.
-	 * 
-	 * @see org.eclipse.ui.part.MultiPageEditorPart#setFocus()
-	 */
-	public void setFocus() {
-		switch (getActivePage()) {
-		case indexSRC:
-			editor.setFocus();
-			break;
-		case indexTBL:
-			tableViewer.getTable().setFocus();
-			break;
-		}
-	}
+    /**
+     * When the focus shifts to the editor, this method is called; it must then
+     * redirect focus to the appropriate editor based on which page is currently
+     * selected.
+     *
+     * @see org.eclipse.ui.part.MultiPageEditorPart#setFocus()
+     */
+    @Override
+    public void setFocus() {
+        switch (getActivePage()) {
+        case indexSRC:
+            editor.setFocus();
+            break;
+        case indexTBL:
+            tableViewer.getTable().setFocus();
+            break;
+        }
+    }
 
-	/**
-	 * Closes all project files on project close.
-	 * 
-	 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
-	 */
-	public void resourceChanged(final IResourceChangeEvent event) {
-		if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					IWorkbenchPage[] pages = getSite().getWorkbenchWindow()
-							.getPages();
-					for (int i = 0; i < pages.length; i++) {
-						if (((FileEditorInput) editor.getEditorInput())
-								.getFile().getProject()
-								.equals(event.getResource())) {
-							IEditorPart editorPart = pages[i].findEditor(editor
-									.getEditorInput());
-							pages[i].closeEditor(editorPart, true);
-						}
-					}
-				}
-			});
-		}
-	}
+    /**
+     * Closes all project files on project close.
+     *
+     * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
+     */
+    @Override
+    public void resourceChanged(final IResourceChangeEvent event) {
+        if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
+            Display.getDefault().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    final IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
+                    for (final IWorkbenchPage page : pages) {
+                        if (((FileEditorInput) editor.getEditorInput()).getFile().getProject().equals(event.getResource())) {
+                            final IEditorPart editorPart = page.findEditor(editor.getEditorInput());
+                            page.closeEditor(editorPart, true);
+                        }
+                    }
+                }
+            });
+        }
+    }
 }

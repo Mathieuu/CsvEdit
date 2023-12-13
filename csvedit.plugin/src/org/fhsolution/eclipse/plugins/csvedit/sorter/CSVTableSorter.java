@@ -15,7 +15,7 @@
 package org.fhsolution.eclipse.plugins.csvedit.sorter;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.fhsolution.eclipse.plugins.csvedit.model.CSVRow;
 
@@ -24,7 +24,7 @@ import org.fhsolution.eclipse.plugins.csvedit.model.CSVRow;
  * @author fhenri
  *
  */
-public class CSVTableSorter extends ViewerSorter {
+public class CSVTableSorter extends ViewerComparator {
 
     private int propertyIndex;
     private static final int DESCENDING = 1;
@@ -38,7 +38,7 @@ public class CSVTableSorter extends ViewerSorter {
      * Public Constructor
      */
     public CSVTableSorter() {
-        this.propertyIndex = -1;
+        propertyIndex = -1;
         direction = DESCENDING;
     }
 
@@ -47,29 +47,32 @@ public class CSVTableSorter extends ViewerSorter {
      *
      * @param column columnId selected by the user.
      */
-    public void setColumn(int column, int dir) {
+    public void setColumn(final int column, final int dir) {
         if (dir == SWT.NONE) {
             noSort = true;
             return;
         }
         noSort = false;
-        if (column != this.propertyIndex) {
+        if (column != propertyIndex) {
             // New column; do an ascending sort
-            this.propertyIndex = column;
+            propertyIndex = column;
         }
-        this.direction = dir == SWT.UP ? ASCENDING : DESCENDING;
+        direction = dir == SWT.UP ? ASCENDING : DESCENDING;
     }
 
     /**
-     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer,
+     *      java.lang.Object, java.lang.Object)
      */
     @Override
-    public int compare(Viewer viewer, Object e1, Object e2) {
+    public int compare(final Viewer viewer, final Object e1, final Object e2) {
         // this is necessary at opening of csv file so column are not sorted.
-        if (propertyIndex == -1 || noSort) return 0;
+        if (propertyIndex == -1 || noSort) {
+            return 0;
+        }
 
-        String row1 = ((CSVRow) e1).getElementAt(propertyIndex);
-        String row2 = ((CSVRow) e2).getElementAt(propertyIndex);
+        final String row1 = ((CSVRow) e1).getElementAt(propertyIndex);
+        final String row2 = ((CSVRow) e2).getElementAt(propertyIndex);
 
         int rc = row1.compareTo(row2);
 
