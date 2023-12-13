@@ -4,7 +4,7 @@ Bundle-Name: Eclipse CSV Editor
 Bundle-SymbolicName: org.fhsolution.eclipse.plugins.csvedit;singleton:=true
 Bundle-Version: 1.2.0
 Bundle-Activator: org.fhsolution.eclipse.plugins.csvedit.Activator
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
@@ -12,8 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .,
- lib/javacsv.jar
+Bundle-ClassPath: .
 Export-Package: org.fhsolution.eclipse.plugins.csvedit.editors;
   uses:="org.eclipse.jface.action,
    org.eclipse.ui.texteditor,
@@ -24,4 +23,5 @@ Export-Package: org.fhsolution.eclipse.plugins.csvedit.editors;
    org.fhsolution.eclipse.plugins.csvedit.model,
    org.eclipse.ui.part",
  org.fhsolution.eclipse.plugins.csvedit.model;uses:="com.csvreader"
+Import-Package: org.jumpmind.symmetric.csv
 Bundle-Vendor: www.fhsolution.com

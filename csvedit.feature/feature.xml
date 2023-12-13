@@ -52,17 +52,14 @@ permissions and limitations under the License.
 
    <plugin
          id="org.fhsolution.eclipse.plugins.csvedit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.fhsolution.eclipse.plugins.csvedit.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
+         version="0.0.0"/>
+
+   <plugin
+         id="wrapped.org.jumpmind.symmetric.symmetric-csv"
+         version="0.0.0"/>
 
 </feature>
