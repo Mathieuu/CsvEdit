@@ -39,3 +39,6 @@ RemoteSystemsTempFiles/
 .texlipse
 
 internalChangelog.txt
+.project
+.classpath
+
