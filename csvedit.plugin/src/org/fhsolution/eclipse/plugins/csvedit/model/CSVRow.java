@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a row made of String elements
@@ -41,46 +42,50 @@ public class CSVRow {
 
     /**
      * Constructor
+     *
      * @param line
      * @param listener
      */
-    public CSVRow(List<String> line, IRowChangesListener listener) {
-        entries = new ArrayList<String>(line);
+    public CSVRow(final List<String> line, final IRowChangesListener listener) {
+        entries = new ArrayList<>(line);
         this.listener = listener;
     }
 
     /**
      * Constructor
+     *
      * @param row
      * @param listener
      */
-    public CSVRow(CSVRow row, IRowChangesListener listener){
-		
-    	this.entries = (ArrayList<String>)row.entries.clone();
-		this.listener = listener;
-		this.isCommentLine = row.isCommentLine;
-		this.isHeader = row.isHeader;
+    public CSVRow(final CSVRow row, final IRowChangesListener listener) {
+
+        entries = new ArrayList<>(row.getEntries());
+        this.listener = listener;
+        isCommentLine = row.isCommentLine;
+        isHeader = row.isHeader;
     }
-    
+
     /**
      * Constructor
+     *
      * @param lineElements
      * @param listener
      */
-    public CSVRow(String[] lineElements, IRowChangesListener listener) {
+    public CSVRow(final String[] lineElements, final IRowChangesListener listener) {
         this(Arrays.asList(lineElements), listener);
     }
 
     /**
      * Create an empty row
+     *
      * @param nbOfColumns
      * @param delimiter
      * @param listener
      * @return
      */
-    public static CSVRow createEmptyLine (int nbOfColumns, IRowChangesListener listener) {
-        List<String> line = new LinkedList<String>();
-        for (int i=0; i<nbOfColumns; i++) {
+    public static CSVRow createEmptyLine(final int nbOfColumns, final IRowChangesListener listener) {
+        final List<String> line = new LinkedList<>();
+        for (int i = 0; i < nbOfColumns; i++) {
             line.add("");
         }
         return new CSVRow(line, listener);
@@ -89,14 +94,14 @@ public class CSVRow {
     /**
      * @return
      */
-    public ArrayList<String> getEntries () {
+    public ArrayList<String> getEntries() {
         return entries;
     }
 
     /**
      * @return
      */
-    public String[] getEntriesAsArray () {
+    public String[] getEntriesAsArray() {
         return entries.toArray(new String[entries.size()]);
     }
 
@@ -104,22 +109,22 @@ public class CSVRow {
      * @param elementIndex
      * @param elementString
      */
-    public void setRowEntry (int elementIndex, String elementString) {
-        if (entries.get(elementIndex).compareTo(elementString) != 0)  {
+    public void setRowEntry(final int elementIndex, final String elementString) {
+        if (entries.get(elementIndex).compareTo(elementString) != 0) {
             entries.set(elementIndex, elementString);
             listener.rowChanged(this, elementIndex);
         }
     }
 
     /**
-     * return the element at a given index.
-     * This method makes sure that if the current line does not have as many
-     * elements as the header, it will not break and return an empty string
+     * return the element at a given index. This method makes sure that if the
+     * current line does not have as many elements as the header, it will not break
+     * and return an empty string
      *
      * @param index
      * @return the element at a given index
      */
-    public String getElementAt (int index) {
+    public String getElementAt(final int index) {
         if (index >= entries.size()) {
             return "";
         }
@@ -128,16 +133,17 @@ public class CSVRow {
 
     /**
      * Return the number of elements in this row
+     *
      * @return number of elements in this row
      */
-    public int getNumberOfElements () {
+    public int getNumberOfElements() {
         return entries.size();
     }
 
     /**
      * @param element
      */
-    public void addElement(String element) {
+    public void addElement(final String element) {
         entries.add(element);
     }
 
@@ -146,27 +152,27 @@ public class CSVRow {
      *
      * @param index
      */
-    public void removeElementAt (int index) {
+    public void removeElementAt(final int index) {
         entries.remove(index);
     }
 
-    public void setCommentLine (boolean comment) {
+    public void setCommentLine(final boolean comment) {
         isCommentLine = comment;
     }
 
-    public boolean isCommentLine () {
+    public boolean isCommentLine() {
         return isCommentLine;
     }
 
-    public void setHeader (boolean header) {
+    public void setHeader(final boolean header) {
         isHeader = header;
     }
 
-    public boolean isHeader () {
+    public boolean isHeader() {
         return isHeader;
     }
 
-    public String getComment () {
+    public String getComment() {
         return entries.get(0).substring(1);
     }
 
@@ -175,9 +181,10 @@ public class CSVRow {
      *
      * @see java.lang.Object#toString()
      */
-    public String toString () {
+    @Override
+    public String toString() {
         String result = "";
-        for (String s:entries) {
+        for (final String s : entries) {
             // FIXME get preferences here
             result = result.concat(s).concat(",");
         }
@@ -189,10 +196,7 @@ public class CSVRow {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((entries == null) ? 0 : entries.hashCode());
-        return result;
+        return Objects.hash(entries);
     }
 
     /**
@@ -200,26 +204,26 @@ public class CSVRow {
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
-   @Override
-	public boolean equals(Object anObject) {
-	   
-		// The commented lines implies that if two rows have the same content,
-		// the cell editor will modify
-		// the first one found instead of the focused one
-		// each row should be considered as unique even if they have the same content
+    @Override
+    public boolean equals(final Object anObject) {
 
-		/*
-		 * AttributeRow thisRow = (AttributeRow) anObject; for (int i=0;
-		 * i<getNumberOfElements(); i++) { if
-		 * (!(getElementAt(i).equals(thisRow.getElementAt(i)))) { return false;
-		 * } } return true;
-		 */
-	   
-		if (this == anObject)
-			return true;
-	
-		else
-			return false;
-	}
+        // The commented lines implies that if two rows have the same content,
+        // the cell editor will modify
+        // the first one found instead of the focused one
+        // each row should be considered as unique even if they have the same content
+
+        /*
+         * AttributeRow thisRow = (AttributeRow) anObject; for (int i=0;
+         * i<getNumberOfElements(); i++) { if
+         * (!(getElementAt(i).equals(thisRow.getElementAt(i)))) { return false; } }
+         * return true;
+         */
+
+        if (this == anObject) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

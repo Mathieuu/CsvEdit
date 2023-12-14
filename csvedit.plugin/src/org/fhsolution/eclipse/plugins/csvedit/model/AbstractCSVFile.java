@@ -451,7 +451,6 @@ public abstract class AbstractCSVFile implements IRowChangesListener {
                 if (row.isCommentLine()) {
                     clw.writeComment(row.getComment());
                 } else {
-                    final String[] ab = row.getEntriesAsArray();
                     clw.writeRecord(row.getEntriesAsArray());
                 }
             }

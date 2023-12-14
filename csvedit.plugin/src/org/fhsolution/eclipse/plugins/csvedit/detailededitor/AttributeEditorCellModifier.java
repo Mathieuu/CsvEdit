@@ -16,64 +16,67 @@
 package org.fhsolution.eclipse.plugins.csvedit.detailededitor;
 
 import org.eclipse.jface.viewers.ICellModifier;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
-*
-* @author fhenri
-* @author msavy
-*
-*/
+ *
+ * @author fhenri
+ * @author msavy
+ *
+ */
 public class AttributeEditorCellModifier implements ICellModifier {
 
     /**
      * Checks whether the given property of the given element can be modified.
      *
-     * @return true if the property can be modified, and false if it is not modifiable
-     * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object, java.lang.String)
+     * @return true if the property can be modified, and false if it is not
+     *         modifiable
+     * @see org.eclipse.jface.viewers.ICellModifier#canModify(java.lang.Object,
+     *      java.lang.String)
      */
-    public boolean canModify (Object element, String property) {
+    @Override
+    public boolean canModify(final Object element, final String property) {
         return true;
     }
 
     /**
-     * Returns the value for the given property of the given element.
-     * Returns "" if the element does not have the given property.
+     * Returns the value for the given property of the given element. Returns "" if
+     * the element does not have the given property.
      *
-     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object, java.lang.String)
+     * @see org.eclipse.jface.viewers.ICellModifier#getValue(java.lang.Object,
+     *      java.lang.String)
      */
-    public Object getValue (Object element, String property) {
-        int elementIndex = Integer.parseInt(property);
-        AttributeRow row = (AttributeRow) element;
+    @Override
+    public Object getValue(final Object element, final String property) {
+        final int elementIndex = Integer.parseInt(property);
+        final AttributeRow row = (AttributeRow) element;
 
-        if(elementIndex < row.getNumberOfElements()) {
+        if (elementIndex < row.getNumberOfElements()) {
             return row.getElementAt(elementIndex);
-        }
-        else {
+        } else {
             return "";
         }
     }
 
     /**
-     * Modifies the value for the given property of the given element.
-     * Has no effect if the element does not have the given property,
-     * or if the property cannot be modified.
+     * Modifies the value for the given property of the given element. Has no effect
+     * if the element does not have the given property, or if the property cannot be
+     * modified.
      *
-     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object, java.lang.String, java.lang.Object)
+     * @see org.eclipse.jface.viewers.ICellModifier#modify(java.lang.Object,
+     *      java.lang.String, java.lang.Object)
      */
-    public void modify (Object element, String property, Object value) {
-        int elementIndex = Integer.parseInt(property);
+    @Override
+    public void modify(final Object element, final String property, final Object value) {
+        final int elementIndex = Integer.parseInt(property);
 
         if (element instanceof TableItem) {
-            AttributeRow row = (AttributeRow) ((TableItem) element).getData();
+            final AttributeRow row = (AttributeRow) ((TableItem) element).getData();
 
-            if(elementIndex < row.getNumberOfElements()) {
+            if (elementIndex < row.getNumberOfElements()) {
                 row.setRowEntry(elementIndex, value.toString());
-            }
-            else {
-                for (int i=row.getNumberOfElements();i<elementIndex + 1;i++) {
+            } else {
+                for (int i = row.getNumberOfElements(); i < elementIndex + 1; i++) {
                     row.addElement("");
                 }
                 row.setRowEntry(elementIndex, value.toString());
