@@ -71,8 +71,8 @@ public class CSVTableSorter extends ViewerComparator {
             return 0;
         }
 
-        final String row1 = ((CSVRow) e1).getElementAt(propertyIndex);
-        final String row2 = ((CSVRow) e2).getElementAt(propertyIndex);
+        final String row1 = nvl(((CSVRow) e1).getElementAt(propertyIndex));
+        final String row2 = nvl(((CSVRow) e2).getElementAt(propertyIndex));
 
         int rc = row1.compareTo(row2);
 
@@ -81,5 +81,9 @@ public class CSVTableSorter extends ViewerComparator {
             rc = -rc;
         }
         return rc;
+    }
+
+    private static final String nvl(final String string) {
+        return string != null ? string : "";
     }
 }
